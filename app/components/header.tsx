@@ -19,9 +19,9 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
         return(
             <View className="flex-1 bg-white">
                 <View className="bg-blue-800 h-40 items-center relative justify-center">
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.push("/")}>
                     <Image
-                        source={{uri: "assets/images/logo.png"}}
+                        source={require("../../assets/images/logo.png")}
                         style={{ width: 150, resizeMode: 'contain' }}
                         />
                     </TouchableOpacity>
@@ -32,15 +32,15 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
                     </View>
             
                     <Image
-                    source={{uri: "assets/images/icone.png"}}
+                    source={require("../../assets/images/icone.png")}
                     style={{
-                        width: 80,
-                        height: 80,
+                        width: 60,
+                        height: 60,
                         borderRadius: 50,
                         backgroundColor: 'white',
                         position: 'absolute',
                         alignSelf: 'center',
-                        bottom: -40,
+                        bottom: -30,
                         borderWidth: 2,
                         borderColor: 'white',
                     }}
@@ -52,9 +52,9 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
         return (
             <View className="flex-1 bg-white">
                 <View className="bg-blue-800 h-26 items-center relative">
-                    <TouchableOpacity onPress={() => {router.push("/")}}>
+                    <TouchableOpacity onPress={() => router.push("/")}>
                     <Image
-                        source={{uri: "assets/images/logo.png"}}
+                        source={require("../../assets/images/logo.png")}
                         style={{ width: 150, height: 150 }}
                     />
                     </TouchableOpacity>
@@ -64,7 +64,6 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
                     <Text className="text-white text-xs">{formattedTime}</Text>
                     </View>
                 </View>
-        
             </View>
         );
     }
