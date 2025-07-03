@@ -17,7 +17,7 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
 
     if(tipo == "comPerfil"){
         return(
-            <View className="flex-1 bg-white">
+            <View className="flex">
                 <View className="bg-blue-800 h-40 items-center relative justify-center">
                     <TouchableOpacity onPress={() => router.push("/")}>
                     <Image

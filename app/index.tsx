@@ -17,12 +17,15 @@ export default function Index() {
         <TouchableOpacity onPress={() => router.push("/login/login?tp=aluno/responsavel")} className="flex justify-center items-center border w-70 p-10 rounded-lg">
           <Text className="text-xl font-semibold">Sou aluno/responsável</Text>
         </TouchableOpacity>
-      </View>
-      <View className="flex items-center mt-40">
-        <Link href={"/politicaPrivacidade/politicaPrivacidade?t=/"}>
-          <Text className="text-gray-600 text-lg ">Política de Privacidade {"\n"}e Segurança</Text>
+    </View>
+    <View className="items-center justify-center pl-1 pt-1 mt-40 mb-4">
+        <Link href="/politicaPrivacidade/politicaPrivacidade?t=/">
+            <Text className="text-gray-600 text-center text-base font-medium">
+            Política de Privacidade {"\n"}         e Segurança
+            </Text>
         </Link>
-      </View>
+    </View>
+
     </View>
   );
 }
