@@ -50,8 +50,8 @@ export default function Header({ tipo }: { tipo: "comPerfil" | "semPerfil"}) {
         );
     }else{
         return (
-            <View className="flex-1 bg-white">
-                <View className="bg-blue-800 h-26 items-center relative">
+            <View className="flex">
+                <View className="bg-blue-800 h-30 items-center relative">
                     <TouchableOpacity onPress={() => router.push("/")}>
                     <Image
                         source={require("../../assets/images/logo.png")}
