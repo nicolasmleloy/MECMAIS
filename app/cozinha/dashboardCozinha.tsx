@@ -5,8 +5,8 @@ export default function DashboardCozinha() {
   return (
     <View className="flex">
       <Header tipo="semPerfil"/>
-      <View>
-      <Text className="text-5xl text-dark-200 font-bold">Dashboard cozinha</Text>
+      <View className="">
+        <Text className="text-5xl text-dark-200 text-center mt-[30]">Nutrição</Text>
       </View>
     </View>
   );
