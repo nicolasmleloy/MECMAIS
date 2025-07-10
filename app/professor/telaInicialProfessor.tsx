@@ -22,7 +22,6 @@ export default function TelaInicialProfessor() {
       <Header tipo="semPerfil"/>
       <View className="flex-1 justify-center items-center">
         <Text className="text-[30px] mb-6 font-bold text-black text-center">Olá Professor(a):</Text>
-        <Text className="text-xl mb-6">aaaaaa</Text>
 
         <TouchableOpacity
         onPress={() => router.push("./chamada")}
