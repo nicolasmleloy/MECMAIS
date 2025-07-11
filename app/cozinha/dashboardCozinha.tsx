@@ -1,4 +1,4 @@
-﻿﻿import React from 'react';
+﻿import React from 'react';
 import { Text, View } from "react-native";
 import Header from "../components/header";
 import FooterOpcoes from '../components/footerOpcoes';

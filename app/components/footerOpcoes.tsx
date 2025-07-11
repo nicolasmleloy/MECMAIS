@@ -1,5 +1,6 @@
 import { TouchableOpacity, View, Image } from "react-native";
 import React from 'react';
+import { router } from "expo-router";
 
 type FooterProps = {
     pagina: "dashboard" | "cardapio" | "notificacoes";
@@ -16,7 +17,7 @@ export default function FooterOpcoes({pagina}: FooterProps){
                     <TouchableOpacity className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                         <Image source={require('../../assets/images/icone-cardapio.png')} width={20}/>
                     </TouchableOpacity>
-                    <TouchableOpacity className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
+                    <TouchableOpacity onPress={() => router.push("/cozinha/notificacoes")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                         <Image source={require('../../assets/images/icone-sino.png')} width={20}/>
                     </TouchableOpacity>
                 </View>
@@ -31,7 +32,7 @@ export default function FooterOpcoes({pagina}: FooterProps){
                         <TouchableOpacity className="flex justify-center items-center bg-gray-800 rounded-xl p-2">
                             <Image source={require('../../assets/images/icone-cardapio.png')} width={20}/>
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
+                        <TouchableOpacity onPress={() => router.push("/cozinha/notificacoes")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                             <Image source={require('../../assets/images/icone-sino.png')} width={20}/>
                         </TouchableOpacity>
                     </View>
