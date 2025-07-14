@@ -42,7 +42,7 @@ export default function DashboardCozinha() {
         </View>
       </View>
 
-      <FooterOpcoes pagina='dashboard'/>
+      <FooterOpcoes perfil="cozinha" pagina='dashboard'/>
     </View>
   );
 }
