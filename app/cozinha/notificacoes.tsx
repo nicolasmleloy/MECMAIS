@@ -1,8 +1,9 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
 import Header from "../components/header";
+import FooterOpcoes from "../components/footerOpcoes";
 
-export default function Notificacoes() {
+export default function NotificacoesCozinha() {
     return (
         <View className="flex">
             <Header tipo="semPerfil"/>
@@ -44,6 +45,7 @@ export default function Notificacoes() {
                 
             </View>
 
+            <FooterOpcoes perfil="cozinha" pagina='notificacoes'/>
         </View>
 
     )
