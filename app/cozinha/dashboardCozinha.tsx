@@ -1,6 +1,7 @@
-﻿import React from "react";
+﻿import React from 'react';
 import { Text, View } from "react-native";
 import Header from "../components/header";
+import FooterOpcoes from '../components/footerOpcoes';
 
 export default function DashboardCozinha() {
   return (
@@ -40,6 +41,8 @@ export default function DashboardCozinha() {
           <Text className="text-base font-semibold">90kg</Text>
         </View>
       </View>
+
+      <FooterOpcoes pagina='dashboard'/>
     </View>
   );
 }
