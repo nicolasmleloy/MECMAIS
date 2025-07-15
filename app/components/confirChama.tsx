@@ -1,3 +1,4 @@
+import React from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

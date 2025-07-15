@@ -6,7 +6,6 @@ import React from 'react';
 
 export default function Politica() {
   const {tp} = useLocalSearchParams();
-  console.log(tp);
 
   return (
     <View className="flex"> 

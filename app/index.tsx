@@ -1,7 +1,8 @@
+import React from "react";
 import { Link, router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import Header from "./components/header";
-import React from "react";
+
 
 export default function Index() {
   return (
