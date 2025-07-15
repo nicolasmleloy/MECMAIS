@@ -7,7 +7,6 @@ import Header from "../components/header";
 import SelecaoTurma from "../components/Turmasele";
 import ListaAlunosPorTurma from "../components/listaAlunos";
 import ConfirmacaoPopup from "../components/confirChama";
-import React from "react";
 import BtnVoltar from "../components/btnVoltar";
 
 export default function Chamada() {

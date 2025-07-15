@@ -4,7 +4,6 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
 import { router } from "expo-router";
-import React from "react";
 import BtnVoltar from "../components/btnVoltar";
 
 export default function TelaInicialProfessor() {
