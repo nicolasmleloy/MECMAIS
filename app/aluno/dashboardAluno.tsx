@@ -23,7 +23,7 @@ export default function DashboardAlunoPais() {
     <View className="flex">
       <Header tipo="semPerfil"/>
             <View className="flex-1 justify-center items-center">
-                <Text className="text-[30px]  mt-5 mb-6 font-bold text-black text-center">Olá Aluno/Responsável(a):</Text>
+                <Text className="text-[30px]  mt-5 mb-6 font-bold text-black text-center">Olá Aluno(a):</Text>
             
                 <View className="flex-row m-1 justify-between p-5 rounded-[20px] bg-[#E4ECFD] shadow">
                     <View className="w-[100px] justify-center">
@@ -38,7 +38,7 @@ export default function DashboardAlunoPais() {
                     </View>
                 </View>
             </View>
-      <FooterOpcoes perfil="aluno/pais" pagina='dashboard'/>
+      <FooterOpcoes perfil="aluno" pagina='dashboard'/>
     </View>
   );
 }

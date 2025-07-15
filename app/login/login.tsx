@@ -46,8 +46,8 @@ export default function Login() {
                     router.push("../professor/telaInicialProfessor");
                   } else if (tp === "cozinha") {
                     router.push("../cozinha/dashboardCozinha");
-                  } else if (tp === "aluno/responsavel") {
-                    router.push("../alunoPais/dashboardAlunoPais");
+                  } else if (tp === "aluno") {
+                    router.push("../aluno/dashboardAluno");
                   }
                 }
               }}

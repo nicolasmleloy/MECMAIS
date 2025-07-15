@@ -25,11 +25,11 @@ export default function Index() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push("/login/login?tp=aluno/responsavel")}
+            onPress={() => router.push("/login/login?tp=aluno")}
             className="flex justify-center items-center border w-full p-10 rounded-lg"
           >
             <Text className="text-xl font-semibold">
-              Sou aluno/responsável
+              Sou aluno(a)
             </Text>
           </TouchableOpacity>
         </View>
