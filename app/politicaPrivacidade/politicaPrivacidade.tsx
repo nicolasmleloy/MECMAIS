@@ -2,6 +2,7 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../components/header';
 import { router, useLocalSearchParams } from 'expo-router';
+import React from 'react';
 
 export default function Politica() {
   const {tp} = useLocalSearchParams();
@@ -31,15 +32,7 @@ export default function Politica() {
         </Text>
         </View>
      
-        <TouchableOpacity onPress={() => {
-        if (tp === 'professor') {
-          router.push('../login/login?tp=professor');
-        } else if (tp === 'cozinha') {
-          router.push('../login/login?tp=cozinha');
-        } else if (tp === "aluno/responsavel") {
-          router.push("../login/login?tp=aluno/responsavel");
-      }
-      }} className='mt-14 ml-4'>
+        <TouchableOpacity onPress={() => {router.push("..")}} className='mt-14 ml-4'>
         <Ionicons name="arrow-back" size={30} color="#000" />
         </TouchableOpacity>
     </View>

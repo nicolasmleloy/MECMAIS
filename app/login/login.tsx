@@ -3,8 +3,12 @@ import { Link } from "expo-router";
 import { Text,TextInput,TouchableOpacity, View } from "react-native";
 import Header from "../components/header";
 import { router } from "expo-router";
+import React, { useState } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
   const {tp} = useLocalSearchParams();
   console.log(tp)
 
@@ -17,11 +21,16 @@ export default function Login() {
             >Login {tp}</Text>
 
             <TextInput
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
                 placeholder="Email"
                 className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-2 shadow-sm"        
             />
 
             <TextInput
+                value={senha}
+                onChangeText={setSenha}
                 placeholder="Senha"
                 secureTextEntry
                 className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-5 shadow-sm"      
@@ -30,12 +39,16 @@ export default function Login() {
             <TouchableOpacity 
             className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md"
               onPress={() => {
-                if (tp === "professor") {
-                  router.push("../professor/telaInicialProfessor");
-                } else if (tp === "cozinha") {
-                  router.push("../cozinha/dashboardCozinha");
-                } else if (tp === "aluno/responsavel") {
+                if(email === "admin" && senha === "admin"){
+                  router.push("../admin/cadastroUsuario");
+                }else{
+                  if (tp === "professor") {
+                    router.push("../professor/telaInicialProfessor");
+                  } else if (tp === "cozinha") {
+                    router.push("../cozinha/dashboardCozinha");
+                  } else if (tp === "aluno/responsavel") {
                     router.push("../alunoPais/dashboardAlunoPais");
+                  }
                 }
               }}
             >
