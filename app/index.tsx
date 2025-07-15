@@ -1,3 +1,4 @@
+import React from "react";
 import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import Header from "./components/header";
@@ -14,7 +15,7 @@ export default function Index() {
           <Text className="text-xl font-semibold">Sou cozinheiro(a)</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push("/login/login?tp=aluno/responsavel")} className="flex justify-center items-center border w-70 p-10 rounded-lg">
-          <Text className="text-xl font-semibold">Sou aluno/responsável</Text>
+          <Text className="text-xl font-semibold">Sou aluno</Text>
         </TouchableOpacity>
     </View>
 
