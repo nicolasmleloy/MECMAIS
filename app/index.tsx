@@ -1,9 +1,8 @@
 import React from "react";
-import { router } from "expo-router";
 import { Link, router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import Header from "./components/header";
-import React from "react";
+
 
 export default function Index() {
   return (
@@ -19,7 +18,7 @@ export default function Index() {
         <TouchableOpacity onPress={() => router.push("/login/login?tp=aluno/responsavel")} className="flex justify-center items-center border w-70 p-10 rounded-lg">
           <Text className="text-xl font-semibold">Sou aluno</Text>
         </TouchableOpacity>
-    </View>
+      </View>
     <View className="flex-1">
       <Header tipo="semPerfil" />
       
@@ -55,6 +54,7 @@ export default function Index() {
           <Text className="text-gray-500 text-xs">Área administrativa</Text>
         </Link>
       </View>
+    </View>
     </View>
   );
 }
