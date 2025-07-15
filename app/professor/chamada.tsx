@@ -1,4 +1,5 @@
 ﻿import { useState } from "react";
+import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { router } from "expo-router";

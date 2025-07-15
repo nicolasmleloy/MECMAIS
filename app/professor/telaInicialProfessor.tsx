@@ -1,4 +1,5 @@
-﻿import { Text, View,TouchableOpacity} from "react-native";
+﻿import React from "react";
+import { Text, View,TouchableOpacity} from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
@@ -22,7 +23,7 @@ export default function TelaInicialProfessor() {
     <View className="flex">
       <Header tipo="semPerfil"/>
       <View className="flex-1 justify-center items-center">
-        <Text className="text-[30px] mb-6 font-bold text-black text-center">Olá Professor(a):</Text>
+        <Text className="text-[30px]  mt-6 mb-6 font-bold text-black text-center">Olá Professor(a):</Text>
 
         <TouchableOpacity
         onPress={() => router.push("./chamada")}
