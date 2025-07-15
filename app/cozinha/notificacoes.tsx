@@ -14,7 +14,6 @@ export default function NotificacoesCozinha() {
 
             <Notificacao Tipo="Atenção" Mensagem="O cardápio da semana já está disponível"/>
             <Notificacao Tipo="Aviso" Mensagem="A Turma 2024.1.144 não realizou a chamada"/>
-            <Notificacao Tipo="Atenção" Mensagem="A Turma 2024.1.145 realizou a chamada"/>
 
             <FooterOpcoes perfil="cozinha" pagina='notificacoes'/>
         </View>
