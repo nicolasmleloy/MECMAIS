@@ -4,7 +4,7 @@ import Header from "../components/header";
 import FooterOpcoes from "../components/footerOpcoes";
 import Notificacao from "../components/notificacao";
 
-export default function NotificacoesCozinha() {
+export default function NotificacoesAlunoPais() {
     return (
         <View className="flex">
             <Header tipo="semPerfil"/>
