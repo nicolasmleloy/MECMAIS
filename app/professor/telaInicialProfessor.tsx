@@ -3,10 +3,11 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
 import { router } from "expo-router";
+import React from "react";
+import BtnVoltar from "../components/btnVoltar";
 
 export default function TelaInicialProfessor() {
   const {tp} = useLocalSearchParams();
-  console.log(tp)
     const [dateTime, setDateTime] = useState(new Date());
     useEffect(() => {
       const timer = setInterval(() => {
@@ -36,7 +37,8 @@ export default function TelaInicialProfessor() {
         </View>
         </TouchableOpacity>
 
-    </View>
+      </View>
+      <BtnVoltar/>
     </View>
   );
 }

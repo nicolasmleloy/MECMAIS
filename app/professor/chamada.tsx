@@ -6,6 +6,8 @@ import Header from "../components/header";
 import SelecaoTurma from "../components/Turmasele";
 import ListaAlunosPorTurma from "../components/listaAlunos";
 import ConfirmacaoPopup from "../components/confirChama";
+import React from "react";
+import BtnVoltar from "../components/btnVoltar";
 
 export default function Chamada() {
   const [turmaSelecionada, setTurmaSelecionada] = useState("");
@@ -28,7 +30,7 @@ export default function Chamada() {
         )}
       </ScrollView>
 
-      <View className="px-4 py-4">
+      <View className="px-4 py-4 mb-5">
         <TouchableOpacity
           className="bg-green-700 py-3 rounded-lg shadow-md mb-3"
           onPress={() => setMostrarPopup(true)}
@@ -36,12 +38,10 @@ export default function Chamada() {
           <Text className="text-white text-center font-semibold text-lg">Concluir</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push("./telaInicialProfessor")}>
-          <Ionicons name="arrow-back" size={30} color="#000" />
-        </TouchableOpacity>
       </View>
 
       <ConfirmacaoPopup visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
+      <BtnVoltar/>
     </View>
   );
 }
