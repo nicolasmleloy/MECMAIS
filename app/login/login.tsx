@@ -10,7 +10,6 @@ export default function Login() {
   const [senha, setSenha] = useState("");
 
   const {tp} = useLocalSearchParams();
-  console.log(tp)
 
   return (
     <View className="flex-1">
@@ -40,7 +39,7 @@ export default function Login() {
             className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md"
               onPress={() => {
                 if(email === "admin" && senha === "admin"){
-                  router.push("../admin/cadastroUsuario");
+                  router.push("/admin/opcoesAdm");
                 }else{
                   if (tp === "professor") {
                     router.push("../professor/telaInicialProfessor");
