@@ -38,6 +38,9 @@ export default function DashboardAlunoPais() {
                     </View>
                 </View>
             </View>
+            <View className="justify-end items-center px-9 pb-1 pt-[350px]">
+              <Text className="h-full text-center text-[15px] text-black">A refeição só pode ser registrada depois que o aluno confirmar presença em sala de aula.</Text>
+            </View>
       <FooterOpcoes perfil="aluno" pagina='dashboard'/>
     </View>
   );
