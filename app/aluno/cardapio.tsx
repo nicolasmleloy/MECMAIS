@@ -12,7 +12,7 @@ export default function CardapioAlunoPais() {
   ]);
 
   const [cardapioSemana, setCardapioSemana] = useState({
-    'Segunda-feira': 'Arroz com carne',
+    'Segunda-feira': 'abobrinha recheada',
     'Terça-feira': 'xuxu com batata',
     'Quarta-feira': 'molinho com molho',
     'Quinta-feira': 'pudim',
