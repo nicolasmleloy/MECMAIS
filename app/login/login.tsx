@@ -38,9 +38,9 @@ export default function Login() {
             <TouchableOpacity 
             className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md"
               onPress={() => {
-                if(email === "admin" && senha === "admin"){
+                if((email === "admin" && senha === "admin") && tp === "admin"){
                   router.push("/admin/opcoesAdm");
-                }else{
+                }else {
                   if (tp === "professor") {
                     router.push("../professor/telaInicialProfessor");
                   } else if (tp === "cozinha") {

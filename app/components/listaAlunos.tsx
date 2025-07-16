@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { dadosTurmas, Aluno } from "../dados";
+import React from "react";
 
 export default function ListaAlunosPorTurma({ turma }: { turma: string }) {
   const turmaDados = dadosTurmas[turma];
