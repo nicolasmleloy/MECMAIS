@@ -22,7 +22,7 @@ export default function opcoesAdm(){
                     onPress={() => router.push("/admin/listagemDeTurmas")}
                     className="flex justify-center items-center border w-full p-10 rounded-lg"
                     >
-                    <Text className="text-xl font-semibold">Gerenciar Turmar</Text>
+                    <Text className="text-xl font-semibold">Gerenciar Turmas</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -86,7 +86,6 @@ export default function ListagemDeUsuarios() {
                 </ScrollView>
                 <Text className="flex justify-end mt-2 text-gray-700">Total de alunos: {dadosFiltrados.length}</Text>
             </View>
-            <BtnVoltar />
 
             <View className="flex items-center mt-5">
                 <TouchableOpacity onPress={() => router.push("/admin/cadastroUsuario")} 
@@ -95,6 +94,7 @@ export default function ListagemDeUsuarios() {
                 <Ionicons name="add-outline" size={30} color="#fff" />
                 </TouchableOpacity>
             </View>
+            <BtnVoltar />
         </View>
     );
 }
