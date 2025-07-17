@@ -21,19 +21,11 @@ export default function DashboardCozinha() {
     { "nome": "Arroz", "porcao_por_aluno_g": 120 },
     { "nome": "Feijão", "porcao_por_aluno_g": 90 },
     { "nome": "Carne Moída", "porcao_por_aluno_g": 100 },
-    { "nome": "Frango", "porcao_por_aluno_g": 100 },
-    { "nome": "Ovo", "porcao_por_aluno_unidade": 1 },
     { "nome": "Macarrão", "porcao_por_aluno_g": 100 },
-    { "nome": "Cenoura", "porcao_por_aluno_g": 50 },
-    { "nome": "Beterraba", "porcao_por_aluno_g": 50 },
     { "nome": "Alface", "porcao_por_aluno_g": 30 },
     { "nome": "Tomate", "porcao_por_aluno_g": 20 },
-    { "nome": "Banana", "porcao_por_aluno_unidade": 1, "peso_estimado_g": 90 },
     { "nome": "Maçã", "porcao_por_aluno_unidade": 1, "peso_estimado_g": 100 },
-    { "nome": "Suco", "porcao_por_aluno_ml": 200 },
-    { "nome": "Leite", "porcao_por_aluno_ml": 200 },
-    { "nome": "Pão Francês", "porcao_por_aluno_g": 60 },
-    { "nome": "Biscoito", "porcao_por_aluno_g": 50 }
+    { "nome": "Suco", "porcao_por_aluno_ml": 200 }
   ]
 
   function calcularIngredientes(dadosAlimentos: Alimento[], quantidadeAlunosEstimados: number): IngredienteCalculado[] {
@@ -44,7 +36,7 @@ export default function DashboardCozinha() {
       }
       if (item.porcao_por_aluno_ml) {
         const totalLitros = (item.porcao_por_aluno_ml * quantidadeAlunosEstimados) / 1000;
-        return { nome: item.nome, quantidade: `${Math.round(totalLitros)} lts` };
+        return { nome: item.nome, quantidade: `${Math.round(totalLitros)}l` };
       }
       if (item.porcao_por_aluno_unidade) {
         return { nome: item.nome, quantidade: `${Math.round(item.porcao_por_aluno_unidade * quantidadeAlunosEstimados)} uni` };
