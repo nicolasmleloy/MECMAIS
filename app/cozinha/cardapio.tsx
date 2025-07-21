@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, ScrollView} from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import Header from "../components/header";
 import FooterOpcoes from "../components/footerOpcoes";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function CardapioAluno() {
-  const [cardapioSemana] = useState({
-    "Segunda-feira": "Arroz com carne",
-    "Terça-feira": "Feijão tropeiro",
-    "Quarta-feira": "Frango assado",
-    "Quinta-feira": "Macarrão ao molho",
-    "Sexta-feira": "Peixe frito com salada",
-  });
+  const router = useRouter();
+
+ 
+  
+  
 
   return (
     <View className="flex-1 bg-white">
@@ -23,20 +21,38 @@ export default function CardapioAluno() {
           Cardápio da semana
         </Text>
 
-        <ScrollView className="flex gap-5 mr-5 ml-5">
-          {Object.entries(cardapioSemana).map(([dia, prato], index) => (
+        <ScrollView className="flex-1 px-4 py-4 space-y-6">
+          {Object.entries(cardapioSemana).map(([dia, { prato, ingredientes }], index) => (
             <View
               key={index}
-              className="flex-row justify-between items-center bg-blue-50 rounded-lg p-4 shadow-sm border border-blue-200"
+              className="bg-blue-50 rounded-lg p-4 shadow-sm border border-blue-200"
             >
-              <View>
+              <View className="flex-row justify-between items-center mb-2">
+                <View>
                   <Text className="text-lg font-bold text-gray-700">{dia}</Text>
                   <Text className="text-sm text-gray-500 mt-1">{prato}</Text>
-                  <Text className="text-sm text-gray-500 mt-1">{}</Text>
-              </View>
-              <TouchableOpacity>
-                    <Ionicons name="create-outline" size={20} color="#000" />
+                </View>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: "../components/editarcardapio",
+                      params: { dia, prato },
+                    })
+                  }
+                >
+                  <Ionicons name="create-outline" size={22} color="#000" />
                 </TouchableOpacity>
+              </View>
+
+              <View className="mt-2">
+                <Text className="text-sm font-semibold text-gray-600 mb-1">Ingredientes:</Text>
+                {ingredientes.map((ing, i) => (
+                  <Text key={i} className="text-sm text-gray-500">
+                    - {ing}
+                  </Text>
+                ))}
+              </View>
             </View>
           ))}
         </ScrollView>
