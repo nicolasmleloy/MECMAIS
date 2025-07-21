@@ -42,7 +42,7 @@ export default function CardapioAluno() {
         </ScrollView>
       </View>
 
-      <FooterOpcoes perfil="aluno" pagina="cardapio" />
+      <FooterOpcoes perfil="cozinha" pagina="cardapio" />
     </View>
   );
 }
