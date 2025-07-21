@@ -24,7 +24,7 @@ export default function DashboardCozinha() {
     { "nome": "Macarrão", "porcao_por_aluno_g": 100 },
     { "nome": "Alface", "porcao_por_aluno_g": 30 },
     { "nome": "Tomate", "porcao_por_aluno_g": 20 },
-    { "nome": "Maçã", "porcao_por_aluno_unidade": 1, "peso_estimado_g": 100 },
+    { "nome": "Maçã", "porcao_por_aluno_unidade": 1},
     { "nome": "Suco", "porcao_por_aluno_ml": 200 }
   ]
 
