@@ -4,7 +4,7 @@ import Header from "../components/header";
 import { Picker } from "@react-native-picker/picker";
 import ConfirmacaoPopup from "../components/confirChama";
 import BtnVoltar from "../components/btnVoltar";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function CadastroUsuario() {
     const [mostrarPopup, setMostrarPopup] = useState(false);
@@ -44,6 +44,31 @@ export default function CadastroUsuario() {
         }else{
             Alert.alert("Atenção", "Preencha todos os campos obrigatórios.");
         }
+    }
+
+
+    async function EnviarDados(){
+        const dados = {
+            tipo_perfil: perfil,
+            nome: formNome,
+            email: formEmail,
+            senha: formSenha,
+            turma: formTurma
+        }
+
+        if(params.modo == "editar"){
+            return;
+        }else{
+            const resposta = await fetch("usuarioRouter.php?acao=create", { //verificar a url
+                method: "POST",
+                body: JSON.stringify(dados)
+            })
+
+            const data = await resposta.json()
+            console.log(data)
+        }
+
+
     }
 
     return (
@@ -109,7 +134,7 @@ export default function CadastroUsuario() {
                     </Picker>
                 )}
 
-                <TouchableOpacity className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md" onPress={validaCampos}>
+                <TouchableOpacity className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md" onPress={EnviarDados}>
                     <Text className="text-white text-xl font-semibold">{nomeBotao}</Text>
                 </TouchableOpacity>
             </View>
