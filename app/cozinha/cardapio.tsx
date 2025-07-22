@@ -56,7 +56,7 @@ export default function CardapioAluno() {
                 <TouchableOpacity
                   onPress={() =>
                     router.push({
-                      pathname: "../components/editarcardapio",
+                      pathname: "/cozinha/editarcardapio",
                       params: { dia, prato },
                     })
                   }

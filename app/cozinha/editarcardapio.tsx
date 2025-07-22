@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-nativ
 import Header from "../components/header";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import BtnVoltar from "./btnVoltar";
+import BtnVoltar from "../components/btnVoltar";
 
 export default function EditarCardapio() {
   const { dia, prato } = useLocalSearchParams();
@@ -41,7 +41,7 @@ export default function EditarCardapio() {
     <View className="flex-1 bg-white">
       <Header tipo="semPerfil" />
 
-      <View className="flex-1 px-4 py-4">
+      <View className="flex px-4 py-4">
         <Text className="text-lg font-bold text-gray-800 text-center mb-4">
           {dia || "Dia da Semana"}
         </Text>
@@ -70,7 +70,7 @@ export default function EditarCardapio() {
           <Text className="w-1/4 text-sm font-bold text-center">Ação</Text>
         </View>
 
-        <ScrollView className="max-h-[350px] border rounded-b-xl">
+        <ScrollView className="max-h-[300px] border rounded-b-xl">
           {ingredientesFiltrados.map((item) => (
             <View
               key={item.id}
