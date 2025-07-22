@@ -8,9 +8,28 @@ import { useRouter } from "expo-router";
 export default function CardapioAluno() {
   const router = useRouter();
 
- 
-  
-  
+  const [cardapioSemana] = useState({
+    "Segunda-feira": {
+      prato: "Arroz com carne",
+      ingredientes: ["Arroz", "Carne", "Cebola", "Tomate"],
+    },
+    "Terça-feira": {
+      prato: "Feijão tropeiro",
+      ingredientes: ["Feijão", "Farinha", "Linguiça", "Ovo"],
+    },
+    "Quarta-feira": {
+      prato: "Frango assado",
+      ingredientes: ["Frango", "Batata", "Cebola", "Cenoura"],
+    },
+    "Quinta-feira": {
+      prato: "Macarrão ao molho",
+      ingredientes: ["Macarrão", "Tomate", "Cebola", "Queijo"],
+    },
+    "Sexta-feira": {
+      prato: "Peixe frito com salada",
+      ingredientes: ["Peixe", "Alface", "Tomate", "Cebola"],
+    },
+  });
 
   return (
     <View className="flex-1 bg-white">
@@ -21,11 +40,12 @@ export default function CardapioAluno() {
           Cardápio da semana
         </Text>
 
-        <ScrollView className="flex-1 px-4 py-4 space-y-6">
-          {Object.entries(cardapioSemana).map(([dia, { prato, ingredientes }], index) => (
+        <ScrollView className="flex-1 px-1 py-1 mr-5 ml-5">
+            <View className="pb-28">
+            {Object.entries(cardapioSemana).map(([dia, { prato, ingredientes }], index) => (
             <View
               key={index}
-              className="bg-blue-50 rounded-lg p-4 shadow-sm border border-blue-200"
+              className="bg-blue-50 rounded-lg p-4 shadow-sm border border-blue-200 mb-6"
             >
               <View className="flex-row justify-between items-center mb-2">
                 <View>
@@ -46,7 +66,9 @@ export default function CardapioAluno() {
               </View>
 
               <View className="mt-2">
-                <Text className="text-sm font-semibold text-gray-600 mb-1">Ingredientes:</Text>
+                <Text className="text-sm font-semibold text-gray-600 mb-1">
+                  Ingredientes:
+                </Text>
                 {ingredientes.map((ing, i) => (
                   <Text key={i} className="text-sm text-gray-500">
                     - {ing}
@@ -55,6 +77,7 @@ export default function CardapioAluno() {
               </View>
             </View>
           ))}
+          </View>
         </ScrollView>
       </View>
 

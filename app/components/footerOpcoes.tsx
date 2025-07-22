@@ -12,7 +12,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
         switch (pagina) {
             case "dashboard":
                 return(
-                    <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                    <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4  ">
                         <TouchableOpacity className="flex justify-center items-center bg-gray-800 rounded-xl p-2">
                             <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                         </TouchableOpacity>
@@ -27,7 +27,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
                 break;
                 case "cardapio":
                     return(
-                        <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                        <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4 bg-white">
                             <TouchableOpacity onPress={() => router.push("/cozinha/dashboardCozinha")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                                 <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                             </TouchableOpacity>
@@ -42,7 +42,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
                     break;
                     case "notificacoes": 
                         return(
-                            <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                            <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4 ">
                                 <TouchableOpacity onPress={() => router.push("/cozinha/dashboardCozinha")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                                     <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                                 </TouchableOpacity>
@@ -62,7 +62,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
         switch (pagina) {
             case "dashboard":
                 return(
-                    <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                    <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4 ">
                         <TouchableOpacity className="flex justify-center items-center bg-gray-800 rounded-xl p-2">
                             <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                         </TouchableOpacity>
@@ -77,7 +77,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
                 break;
                 case "cardapio":
                     return(
-                        <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                        <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4 bg-white">
                             <TouchableOpacity onPress={() => router.push("/aluno/dashboardAluno")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                                 <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                             </TouchableOpacity>
@@ -92,7 +92,7 @@ export default function FooterOpcoes({perfil, pagina}: FooterProps){
                     break;
                     case "notificacoes": 
                         return(
-                            <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4">
+                            <View className="flex-row justify-around w-full fixed bottom-0 left-0 z-99 p-4  ">
                                 <TouchableOpacity onPress={() => router.push("/aluno/dashboardAluno")} className="flex justify-center items-center bg-[#0E57C6] rounded-xl p-2">
                                     <Image source={require('../../assets/images/icone-ok.png')} width={20}/>
                                 </TouchableOpacity>
