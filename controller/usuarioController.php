@@ -46,6 +46,7 @@ class UsuarioController{
 
     public function CreateUsuario($tipo_perfil ,$nome, $email, $senha, $turma){
         try {
+            echo $tipo_perfil;
             if($tipo_perfil == "aluno"){
                 $sql = "INSERT INTO aluno(nome, senha, email, turma)VALUES(:nome,:senha, :email, :turma)";
                 $db = $this->conn->prepare($sql);

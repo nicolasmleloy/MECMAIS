@@ -59,13 +59,15 @@ export default function CadastroUsuario() {
         if(params.modo == "editar"){
             return;
         }else{
-            const resposta = await fetch("usuarioRouter.php?acao=create", { //verificar a url
+            const resposta = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=create", { //verificar a url
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify(dados)
             })
 
-            const data = await resposta.json()
-            console.log(data)
+            console.log(resposta); 
         }
 
 
