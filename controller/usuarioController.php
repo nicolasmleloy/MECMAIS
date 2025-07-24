@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../config/db/database.php";
+require_once __DIR__ . "/../config/config/db/database.php";
 
 class UsuarioController{
 
@@ -13,7 +13,7 @@ class UsuarioController{
 
     public function GetAllUsuarios(){
         try {
-            $sql = "SELECT * FROM usuarios";
+            $sql = "SELECT * FROM professor";
             $db = $this->conn->prepare($sql);
             $db->execute();
             $usuario = $db->fetchAll(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ class UsuarioController{
                 return false;
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -40,44 +40,62 @@ class UsuarioController{
         
 
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
     public function CreateUsuario($tipo_perfil ,$nome, $email, $senha, $turma){
         try {
-            echo $tipo_perfil;
-            if($tipo_perfil == "aluno"){
-                $sql = "INSERT INTO aluno(nome, senha, email, turma)VALUES(:nome,:senha, :email, :turma)";
-                $db = $this->conn->prepare($sql);
-                $db->bindParam(":nome",$nome);
-                $db->bindParam(":senha",$senha);
-                $db->bindParam(":email",$email);
-                $db->bindParam(":turma",$turma);
-            }else if($tipo_perfil == "professor"){
-                $sql = "INSERT INTO professor(nome, senha, email)VALUES(:nome,:senha, :email)";
-                $db = $this->conn->prepare($sql);
-                $db->bindParam(":nome",$nome);
-                $db->bindParam(":senha",$senha);
-                $db->bindParam(":email",$email);
-            }else if($tipo_perfil == "cozinha"){
-                $sql = "INSERT INTO cozinha(nome, senha, email)VALUES(:nome,:senha, :email)";
-                $db = $this->conn->prepare($sql);
-                // $db->bindParam(":nome",$nome);
-                $db->bindParam(":senha",$senha);
-                $db->bindParam(":email",$email);
+            if (!in_array($tipo_perfil, ["Aluno(a)", "Professor(a)", "Cozinheiro(a)"])) {
+                throw new Exception("Tipo de perfil inválido: " . $tipo_perfil);
             }else{
-                return false;
+                if($tipo_perfil == "Aluno(a)"){
+                    $sqlTurma = "SELECT id FROM turma WHERE nome_turma = :nome_turma";
+                    $stmtTurma = $this->conn->prepare($sqlTurma);
+                    $stmtTurma->bindParam(":nome_turma", $turma);
+                    $stmtTurma->execute();
+                    $resultTurma = $stmtTurma->fetch(PDO::FETCH_ASSOC);
+                
+                    if (!$resultTurma) {
+                        throw new Exception("Turma não encontrada: " . $turma);
+                    }
+                    $id_turma = $resultTurma['id'];
+                
+                    $sql = "INSERT INTO aluno(nome, email, senha, id_turma) VALUES (:nome, :email, :senha, :id_turma)";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(":nome", $nome);
+                    $stmt->bindParam(":email", $email);
+                    $stmt->bindParam(":senha", $senha);
+                    $stmt->bindParam(":id_turma", $id_turma);
+                
+                    if ($stmt->execute()) {
+                        return true;
+                    } else {
+                        return false;
+                    }                
+                }else if($tipo_perfil == "Professor(a)"){
+                    $sql = "INSERT INTO professor(nome, email, senha)VALUES(:nome, :email, :senha)";
+                    $db = $this->conn->prepare($sql);
+                    $db->bindParam(":nome",$nome);
+                    $db->bindParam(":email",$email);
+                    $db->bindParam(":senha",$senha);
+                }else if($tipo_perfil == "Cozinheiro(a)"){
+                    $sql = "INSERT INTO cozinha(email, senha)VALUES(:email, :senha)";
+                    $db = $this->conn->prepare($sql);
+                    $db->bindParam(":email",$email);
+                    $db->bindParam(":senha",$senha);
+                }
+    
+                if($db->execute()){
+                    return true;
+                }else{
+                    return false;
+                }
             }
-
-            if($db->execute()){
-                return true;
-            }else{
-                return false;
-            }
+            
 
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -95,7 +113,7 @@ class UsuarioController{
                 return false;
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -110,7 +128,7 @@ class UsuarioController{
                 return false;
             }
         } catch (\Exception $th) {
-            $th->getMessage();
+            return $th->getMessage();
         }
     }
 }
