@@ -17,6 +17,34 @@ export default function cadastroDeTurmas(){
         }
     }, [params])
 
+    async function EnviarDados(){
+        const dados = {
+            turma: formTurma
+        }
+
+        if(params.modo == "editar"){
+            return;
+        }else{
+            const resposta = await fetch("http://localhost/MECMAIS/router/turmaRouter.php?acao=create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+
+
+            const dadosResposta = await resposta.json()
+            
+            if(dadosResposta[0]){
+                window.alert(`Adicionado com sucesso: ${formTurma}`)
+            }else{
+                window.alert(`Turma já existe no banco de dados!`)
+            }
+        }
+
+    }
+
     return (
         <View className="flex-1">
             <Header tipo="semPerfil"/>
@@ -29,7 +57,7 @@ export default function cadastroDeTurmas(){
                     className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-5 shadow-sm"
                 />
 
-                <TouchableOpacity className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md">
+                <TouchableOpacity onPress={EnviarDados} className="w-[75%] bg-[#0a57d6] py-3.5 rounded-lg items-center shadow-md">
                     <Text className="text-white text-xl font-semibold">{nomeBotao}</Text>
                 </TouchableOpacity>
             </View>

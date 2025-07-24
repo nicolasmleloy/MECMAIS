@@ -46,6 +46,15 @@ export default function CadastroUsuario() {
         }
     }
 
+    // useEffect(
+    //     async (){
+    //     const resposta = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=capturarTurmas", {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    // })
 
     async function EnviarDados(){
         const dados = {
@@ -66,7 +75,12 @@ export default function CadastroUsuario() {
                 },
                 body: JSON.stringify(dados)
             })
-
+            const dadosResposta = await resposta.json()
+            if(dadosResposta[0]){
+                window.alert(`Adicionado com sucesso: ${formNome}`);
+            }else{
+                window.alert(`Erro: algo de errado aconteceu!`);
+            }
             console.log(resposta); 
         }
 
@@ -102,7 +116,7 @@ export default function CadastroUsuario() {
                 />
 
                 <TextInput
-                    value={formSenha}
+                    value={formConfirmarSenha}
                     onChangeText={setFormConfirmarSenha}
                     placeholder="Confirmar Senha"
                     secureTextEntry

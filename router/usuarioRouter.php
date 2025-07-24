@@ -15,19 +15,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $resultado = $usuarioController->CreateUsuario($data['tipo_perfil'], $data['nome'], $data['email'], $data['senha'], $data['turma']);
         echo json_encode([$resultado]);
         break;
-         
-        // case "update":
-        //     $resultado = $usuarioController->UpdateUsuario($_POST["nome"],$_POST["senha"], $_POST["usuario_id"]);
-        //     if($resultado){
-        //         header("Location: ../view/home/index.php");
-        //     }else{
-        //         header("Location: ../view/cadastro/index.php?id={$_POST['usuario_id']}");
-        //     }
-        //     break;
-        // case "deletarUsuario":
-        //     $resultado = $usuarioController->DeletarUsuario($_POST["usuario_id"]);
-        //     header("Location: ../view/home/index.php");
-        //     break;
         
         default:
             echo "Nao encontrei nada";
