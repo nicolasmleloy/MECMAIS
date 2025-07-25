@@ -9,15 +9,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     switch ($_GET["acao"]) {
         case 'create':
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
 
-        $resultado = $usuarioController->CreateUsuario($data['tipo_perfil'], $data['nome'], $data['email'], $data['senha'], $data['turma']);
-        echo json_encode([$resultado]);
-        break;
+            $resultado = $usuarioController->CreateUsuario($data['tipo_perfil'], $data['nome'], $data['email'], $data['senha'], $data['turma']);
+            echo json_encode([$resultado]);
+            break;
         
         default:
             echo "Nao encontrei nada";
             break;
     }
+
+}else if($_SERVER["REQUEST_METHOD"] == "GET"){
+    switch ($_GET["acao"]) {
+        case 'buscarUsuarios':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+
+            $resultado = $usuarioController->BuscarTodasTurmas();
+            echo json_encode([$resultado]);
+            break;
+        
+        default:
+            echo "Nao encontrei nada";
+            break;
+    }
+}else{
+    echo "Erro";
 }

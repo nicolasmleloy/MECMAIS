@@ -11,38 +11,30 @@ class UsuarioController{
         $this->conn = $banco->Connect();
     }
 
-    public function GetAllUsuarios(){
-        try {
-            $sql = "SELECT * FROM professor";
-            $db = $this->conn->prepare($sql);
-            $db->execute();
-            $usuario = $db->fetchAll(PDO::FETCH_ASSOC);
+    // public function BuscarTodosUsuarios(){
+    //     try {
+    //         $sqlAlunos = "SELECT nome, email, 'Aluno(a)' AS tipo, id_turma FROM aluno";
+    //         $stmtAlunos = $this->conn->prepare($sqlAlunos);
+    //         $stmtAlunos->execute();
+    //         $alunos = $stmtAlunos->fetchAll(PDO::FETCH_ASSOC);
 
-            if($usuario){
-                return $usuario;
-            }else{
-                return false;
-            }
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
-    }
+    //         $sqlProfessores = "SELECT nome, email, 'Professor(a)' AS tipo FROM professor";
+    //         $stmtProfessores = $this->conn->prepare($sqlProfessores);
+    //         $stmtProfessores->execute();
+    //         $professores = $stmtProfessores->fetchAll(PDO::FETCH_ASSOC);
 
-    public function GetUsuarioById($id){
-        try {
-            $sql = "SELECT * FROM usuarios WHERE id = :id";
-            $db = $this->conn->prepare($sql);
-            $db->bindParam(":id",$id);
-            $db->execute();
-            $usuario = $db->fetch(PDO::FETCH_ASSOC);
+    //         $sqlCozinheiros = "SELECT nome, email, 'Cozinheiro(a)' AS tipo FROM cozinha";
+    //         $stmtCozinheiros = $this->conn->prepare($sqlCozinheiros);
+    //         $stmtCozinheiros->execute();
+    //         $cozinheiros = $stmtCozinheiros->fetchAll(PDO::FETCH_ASSOC);
 
-            return $usuario;
-        
+    //         $usuarios = array_merge($alunos, $professores, $cozinheiros);
 
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
-    }
+    //         return $usuarios;
+    //     } catch (\Throwable $th) {
+    //         return $th->getMessage();
+    //     }
+    // }
 
     public function CreateUsuario($tipo_perfil ,$nome, $email, $senha, $turma){
         try {
@@ -80,8 +72,9 @@ class UsuarioController{
                     $db->bindParam(":email",$email);
                     $db->bindParam(":senha",$senha);
                 }else if($tipo_perfil == "Cozinheiro(a)"){
-                    $sql = "INSERT INTO cozinha(email, senha)VALUES(:email, :senha)";
+                    $sql = "INSERT INTO cozinha(nome, email, senha)VALUES(:nome, :email, :senha)";
                     $db = $this->conn->prepare($sql);
+                    $db->bindParam(":nome",$nome);
                     $db->bindParam(":email",$email);
                     $db->bindParam(":senha",$senha);
                 }
@@ -95,39 +88,6 @@ class UsuarioController{
             
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
-    }
-
-    public function UpdateUsuario($nome,$senha,$id){
-        try {
-            $sql = "UPDATE usuarios SET nome = :nome, senha = :senha WHERE id = :id";
-            $db = $this->conn->prepare($sql);
-            $db->bindParam(":nome",$nome);
-            $db->bindParam(":senha",$senha);
-            $db->bindParam(":id",$id);
-
-            if($db->execute()){
-                return true;
-            }else{
-                return false;
-            }
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
-    }
-
-    public function DeletarUsuario($id){
-        try {
-            $sql = "DELETE FROM usuarios WHERE id = :id";
-            $db = $this->conn->prepare($sql);
-            $db->bindParam(":id",$id);
-            if($db->execute()){
-                return true;
-            }else{
-                return false;
-            }
-        } catch (\Exception $th) {
             return $th->getMessage();
         }
     }

@@ -7,6 +7,10 @@ import BtnVoltar from "../components/btnVoltar";
 import { router, useLocalSearchParams } from "expo-router";
 
 export default function CadastroUsuario() {
+    interface Turma {
+        nome_turma: string;
+    }
+
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [perfil, setPerfil] = useState("");
     const [formNome, setFormNome] = useState("");
@@ -14,6 +18,7 @@ export default function CadastroUsuario() {
     const [formSenha, setFormSenha] = useState("");
     const [formConfirmarSenha, setFormConfirmarSenha] = useState("");
     const [formTurma, setFormTurma] = useState("");
+    const [dadosTurmas, setDadosTurmas] = useState<Turma[]>([]);
 
     const params = useLocalSearchParams();
     const nomeBotao = params.modo === "editar" ? "Confirmar" : "Cadastrar";
@@ -46,15 +51,18 @@ export default function CadastroUsuario() {
         }
     }
 
-    // useEffect(
-    //     async (){
-    //     const resposta = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=capturarTurmas", {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     })
-    // })
+    async function BuscarTurmas(){
+        const respostaTurmas = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=buscarTurmas", {
+            method: "GET"
+        })
+
+        const dadosTurmas = await respostaTurmas.json();
+        setDadosTurmas(dadosTurmas[0]);
+    }
+
+    useEffect(() => {
+        BuscarTurmas();
+    }, [])
 
     async function EnviarDados(){
         const dados = {
@@ -141,12 +149,11 @@ export default function CadastroUsuario() {
                         className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-5 shadow-sm"
                         dropdownIconColor="#000"
                         >
-                        <Picker.Item label="Ex.: 2024.1.144" value="Ex.: 2024.1.144"/>
-                        <Picker.Item label="2024.1.144" value="2024.1.144" />
-                        <Picker.Item label="2024.1.145" value="2024.1.145" />
-                        <Picker.Item label="2024.1.146" value="2024.1.146" />
-                        <Picker.Item label="2024.1.147" value="2024.1.147" />
-                        <Picker.Item label="2024.1.148" value="2024.1.148" />
+                        {dadosTurmas.map((item) => (
+                            <View>
+                                <Picker.Item label={item.nome_turma} value={item.nome_turma}/>
+                            </View>
+                        ))}
                     </Picker>
                 )}
 

@@ -16,8 +16,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo json_encode([$resultado]);
             break;
         
+        case 'update':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+        
+            $resultado = $turmaController->UpdateTurma($data['turma_atual'], $data['turma_editado']);
+            echo json_encode([$resultado]);
+            break;
+
+        case 'delete':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+        
+            $resultado = $turmaController->DeleteTurma($data['turma_a_remover']);
+            echo json_encode([$resultado]);
+            break;
         default:
             echo "Nao encontrei nada";
             break;
     }
+}else if($_SERVER["REQUEST_METHOD"] == "GET"){
+    switch ($_GET["acao"]) {
+        case 'buscarTurmas':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+
+            $resultado = $turmaController->BuscarTodasTurmas();
+            echo json_encode([$resultado]);
+            break;
+        
+        default:
+            echo "Nao encontrei nada";
+            break;
+    }
+}else{
+    echo "Erro";
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import Header from "../components/header";
 import { router } from "expo-router";
@@ -6,24 +6,48 @@ import BtnVoltar from "../components/btnVoltar";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function listagemDeTurmas(){
-    const [inputPesquisa, setInputPesquisa] = useState("");
-    
-    const turmas = [
-        "2024.1.144",
-        "2024.1.145",
-        "2024.1.146",
-        "2024.1.147",
-        "2024.1.148",
-        "2024.1.149",
-        "2024.1.150",
-        "2024.1.151",
-        "2024.1.152",
-        "2024.1.153"
-      ];
-      
+    interface Turma {
+        nome_turma: string;
+    }
 
-    const turmasFiltradas = turmas.filter(item => 
-        item.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase())
+    const [inputPesquisa, setInputPesquisa] = useState("");
+    const [dadosTurmas, setDadosTurmas] = useState<Turma[]>([]);
+    const [dadosResposta, setDadosResposta] = useState([]);
+
+    
+    async function RemoverTurma(turma: string) {
+        const dados = {
+            turma_a_remover: turma
+        }
+        
+        const respostaTurmas = await fetch("http://localhost/MECMAIS/router/turmaRouter.php?acao=delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        })
+
+        const dadosResposta = await respostaTurmas.json()
+        window.alert(`Turma deletada: ${dadosResposta[0]}`)
+        setDadosResposta(dadosResposta)
+    }
+
+    async function BuscarTurmas(){
+        const respostaTurmas = await fetch("http://localhost/MECMAIS/router/turmaRouter.php?acao=buscarTurmas", {
+            method: "GET"
+        })
+
+        const dadosTurmas = await respostaTurmas.json();
+        setDadosTurmas(dadosTurmas[0]);
+    }
+
+    useEffect(() => {
+        BuscarTurmas();
+    }, [dadosResposta])
+
+    const turmasFiltradas = dadosTurmas.filter(item => 
+        item.nome_turma.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase())
     )
 
     return (
@@ -51,32 +75,34 @@ export default function listagemDeTurmas(){
                             className="flex-row justify-between items-center border-x border-b px-2 py-2"
                         >
                             <View className="text-sm w-1/3">
-                                <Text className="text-start">{item}</Text>
+                                <Text className="text-start">{item.nome_turma}</Text>
                             </View>
                             <View className="flex-row justify-end gap-3 text-sm w-1/3">
                                 <TouchableOpacity onPress={() => router.push({
                                     pathname: "/admin/cadastroDeTurmas",
                                     params: {
-                                        turma: item,
+                                        turma: item.nome_turma,
                                         modo: "editar"
                                     }
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => RemoverTurma(item.nome_turma)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>
                         </View>
                     ))}
                 </ScrollView>
-                <Text className="flex justify-end mt-2 text-gray-700">Total de alunos: {turmasFiltradas.length}</Text>
+                <Text className="flex justify-end mt-2 text-gray-700">Total de alunos: {dadosTurmas.length}</Text>
             </View>
 
             <View className="flex items-center mt-5">
-                <TouchableOpacity onPress={() => router.push("/admin/cadastroDeTurmas")} 
-                className="flex-row items-center gap-2 justify-center w-[70%] p-4 rounded-lg bg-green-700 shadow-md font-semibold text-white text-lg">
-                Novo Cadastro
+            <TouchableOpacity
+                onPress={() => router.push("/admin/cadastroDeTurmas")}
+                className="flex-row items-center gap-2 justify-center w-[70%] p-4 rounded-lg bg-green-700 shadow-md"
+                >
+                <Text className="font-semibold text-white text-lg">Novo Cadastro</Text>
                 <Ionicons name="add-outline" size={30} color="#fff" />
                 </TouchableOpacity>
             </View>
