@@ -8,32 +8,14 @@ import { router } from "expo-router";
 export default function ListagemDeUsuarios() {
     interface Usuario {
         nome: string;
-        tipo_perfil: string;
+        tipo: string;
         email: string;
         senha: string;
-        turma: string;
+        nome_turma: string;
     }
 
     const [inputPesquisa, setInputPesquisa] = useState("");
     const [dadosUsuarios, setDadosUsuarios] = useState<Usuario[]>([]);
-    
-    const dados = [
-        { nome: "Nícolas Marcelo", tipo: "Aluno(a)", email: "nicolas.marcelo@email.com", senha: "senha123", turma: "2024.1.144" },
-        { nome: "Ana Clara Ramos", tipo: "Professor(a)", email: "ana.ramos@email.com", senha: "senha456", turma: "" },
-        { nome: "Carlos Eduardo", tipo: "Cozinheiro(a)", email: "carlos.eduardo@email.com", senha: "senha789", turma: "" },
-        { nome: "Mariana Souza", tipo: "Professor(a)", email: "mariana.souza@email.com", senha: "prof321", turma: "" },
-        { nome: "Rafael Silva", tipo: "Cozinheiro(a)", email: "rafael.silva@email.com", senha: "cozinheiro123", turma: "" },
-        { nome: "Bianca Fernandes", tipo: "Aluno(a)", email: "bianca.fernandes@email.com", senha: "senha234", turma: "2024.1.145" },
-        { nome: "Lucas Pereira", tipo: "Aluno(a)", email: "lucas.pereira@email.com", senha: "senha345", turma: "2024.1.146" },
-        { nome: "Juliana Costa", tipo: "Professor(a)", email: "juliana.costa@email.com", senha: "senha456", turma: "" },
-        { nome: "Thiago Alves", tipo: "Aluno(a)", email: "thiago.alves@email.com", senha: "senha567", turma: "2024.1.147" },
-        { nome: "Fernanda Gomes", tipo: "Professor(a)", email: "fernanda.gomes@email.com", senha: "prof567", turma: "" },
-        { nome: "Pedro Henrique", tipo: "Cozinheiro(a)", email: "pedro.henrique@email.com", senha: "senha890", turma: "" },
-        { nome: "Isabela Duarte", tipo: "Professor(a)", email: "isabela.duarte@email.com", senha: "senha910", turma: "" },
-        { nome: "Gabriel Santos", tipo: "Cozinheiro(a)", email: "gabriel.santos@email.com", senha: "coz456", turma: "" },
-        { nome: "Larissa Oliveira", tipo: "Aluno(a)", email: "larissa.oliveira@email.com", senha: "senha678", turma: "2024.1.148" },
-        { nome: "Victor Lima", tipo: "Professor(a)", email: "victor.lima@email.com", senha: "prof789", turma: "" }
-    ];
 
     async function BuscarUsuarios(){
         const respostaUsuarios = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=buscarUsuarios", {
@@ -48,9 +30,9 @@ export default function ListagemDeUsuarios() {
         BuscarUsuarios();
     }, [])
     
-    const dadosFiltrados = dadosUsuarios.filter(item =>  //Não apresenta os dados pq está com (dadosUsuarios)
+    const dadosFiltrados = dadosUsuarios.filter(item =>
         item.nome.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase()) || 
-        item.tipo_perfil.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase())
+        item.tipo.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase())
     )
 
     return (
@@ -83,17 +65,17 @@ export default function ListagemDeUsuarios() {
                                 <Text className="text-start">{item.nome}</Text>
                             </View>
                             <View className="text-sm w-1/3">
-                                <Text className="text-center">{item.tipo_perfil}</Text>
+                                <Text className="text-center">{item.tipo}</Text>
                             </View>
                             <View className="flex-row justify-end gap-3 text-sm w-1/3">
                                 <TouchableOpacity onPress={() => router.push({
                                     pathname: "/admin/cadastroUsuario",
                                     params: {
                                         nome: item.nome,
-                                        tipo: item.tipo_perfil,
+                                        tipo: item.tipo,
                                         email: item.email,
                                         senha: item.senha,
-                                        turma: item.turma,
+                                        turma: item.nome_turma,
                                         modo: "editar"
                                     }
                                 })}>

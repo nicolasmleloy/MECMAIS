@@ -15,6 +15,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $resultado = $usuarioController->CreateUsuario($data['tipo_perfil'], $data['nome'], $data['email'], $data['senha'], $data['turma']);
             echo json_encode([$resultado]);
             break;
+        case 'update':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+
+            $resultado = $usuarioController->UpdateUsuario($data['tipo_perfil'], $data['nome'], $data['email_antigo'], $data['email_novo'], $data['senha'], $data['turma']);
+            echo json_encode([$resultado]);
+            break;
         
         default:
             echo "Nao encontrei nada";
@@ -27,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $input = file_get_contents('php://input');
             $data = json_decode($input, true);
 
-            $resultado = $usuarioController->BuscarTodasTurmas();
+            $resultado = $usuarioController->BuscarTodosUsuarios();
             echo json_encode([$resultado]);
             break;
         

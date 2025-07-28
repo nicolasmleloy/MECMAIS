@@ -11,30 +11,32 @@ class UsuarioController{
         $this->conn = $banco->Connect();
     }
 
-    // public function BuscarTodosUsuarios(){
-    //     try {
-    //         $sqlAlunos = "SELECT nome, email, 'Aluno(a)' AS tipo, id_turma FROM aluno";
-    //         $stmtAlunos = $this->conn->prepare($sqlAlunos);
-    //         $stmtAlunos->execute();
-    //         $alunos = $stmtAlunos->fetchAll(PDO::FETCH_ASSOC);
+    public function BuscarTodosUsuarios(){
+        try {
+            $sqlAlunos = "SELECT a.nome, a.email, a.senha, a.id_turma, 'Aluno(a)' AS tipo, t.nome_turma 
+            FROM aluno a 
+            LEFT JOIN turma t ON a.id_turma = t.id";
+            $stmtAlunos = $this->conn->prepare($sqlAlunos);
+            $stmtAlunos->execute();
+            $alunos = $stmtAlunos->fetchAll(PDO::FETCH_ASSOC);
 
-    //         $sqlProfessores = "SELECT nome, email, 'Professor(a)' AS tipo FROM professor";
-    //         $stmtProfessores = $this->conn->prepare($sqlProfessores);
-    //         $stmtProfessores->execute();
-    //         $professores = $stmtProfessores->fetchAll(PDO::FETCH_ASSOC);
+            $sqlProfessores = "SELECT nome, email, senha, 'Professor(a)' AS tipo FROM professor";
+            $stmtProfessores = $this->conn->prepare($sqlProfessores);
+            $stmtProfessores->execute();
+            $professores = $stmtProfessores->fetchAll(PDO::FETCH_ASSOC);
 
-    //         $sqlCozinheiros = "SELECT nome, email, 'Cozinheiro(a)' AS tipo FROM cozinha";
-    //         $stmtCozinheiros = $this->conn->prepare($sqlCozinheiros);
-    //         $stmtCozinheiros->execute();
-    //         $cozinheiros = $stmtCozinheiros->fetchAll(PDO::FETCH_ASSOC);
+            $sqlCozinheiros = "SELECT nome, email, senha, 'Cozinheiro(a)' AS tipo FROM cozinha";
+            $stmtCozinheiros = $this->conn->prepare($sqlCozinheiros);
+            $stmtCozinheiros->execute();
+            $cozinheiros = $stmtCozinheiros->fetchAll(PDO::FETCH_ASSOC);
 
-    //         $usuarios = array_merge($alunos, $professores, $cozinheiros);
+            $usuarios = array_merge($alunos, $professores, $cozinheiros);
 
-    //         return $usuarios;
-    //     } catch (\Throwable $th) {
-    //         return $th->getMessage();
-    //     }
-    // }
+            return $usuarios;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
 
     public function CreateUsuario($tipo_perfil ,$nome, $email, $senha, $turma){
         try {
@@ -72,6 +74,7 @@ class UsuarioController{
                     $db->bindParam(":email",$email);
                     $db->bindParam(":senha",$senha);
                 }else if($tipo_perfil == "Cozinheiro(a)"){
+                    $sql = "INSERT INTO cozinha(email, senha)VALUES(:email, :senha)";
                     $sql = "INSERT INTO cozinha(nome, email, senha)VALUES(:nome, :email, :senha)";
                     $db = $this->conn->prepare($sql);
                     $db->bindParam(":nome",$nome);
@@ -91,4 +94,61 @@ class UsuarioController{
             return $th->getMessage();
         }
     }
+
+    public function UpdateUsuario($tipo_perfil, $nome, $email_antigo, $email_novo, $senha, $turma){
+        try {
+            if (!in_array($tipo_perfil, ["Aluno(a)", "Professor(a)", "Cozinheiro(a)"])) {
+                throw new Exception("Tipo de perfil inválido: " . $tipo_perfil);
+            }
+    
+            if($tipo_perfil == "Aluno(a)") {
+                $sqlBuscaTurma = "SELECT id FROM turma WHERE nome_turma = :nome_turma";
+                $stmtTurma = $this->conn->prepare($sqlBuscaTurma);
+                $stmtTurma->bindParam(":nome_turma", $turma);
+                $stmtTurma->execute();
+                $resultTurma = $stmtTurma->fetch(PDO::FETCH_ASSOC);
+    
+                if (!$resultTurma) {
+                    throw new Exception("Turma não encontrada: " . $turma);
+                }
+    
+                $id_turma = $resultTurma['id'];
+    
+                $sqlUpdate = "UPDATE aluno SET nome = :nome, email = :email_novo, senha = :senha, id_turma = :id_turma WHERE email = :email_antigo";
+                $stmtUpdate = $this->conn->prepare($sqlUpdate);
+                $stmtUpdate->bindParam(":nome", $nome);
+                $stmtUpdate->bindParam(":senha", $senha);
+                $stmtUpdate->bindParam(":email_antigo", $email_antigo);
+                $stmtUpdate->bindParam(":email_novo", $email_novo);
+                $stmtUpdate->bindParam(":id_turma", $id_turma);
+    
+                return $stmtUpdate->execute();
+            }
+            else if($tipo_perfil == "Professor(a)") {
+                $sqlUpdate = "UPDATE professor SET nome = :nome, senha = :senha, email = :email_novo WHERE email = :email_antigo";
+                $stmt = $this->conn->prepare($sqlUpdate);
+                $stmt->bindParam(":nome", $nome);
+                $stmt->bindParam(":email_antigo", $email_antigo);
+                $stmt->bindParam(":email_novo", $email_novo);
+                $stmt->bindParam(":senha", $senha);
+    
+                return $stmt->execute();
+            }
+            else if($tipo_perfil == "Cozinheiro(a)") {
+                $sqlUpdate = "UPDATE cozinha SET nome = :nome, senha = :senha, email = :email_novo WHERE email = :email_antigo";
+                $stmt = $this->conn->prepare($sqlUpdate);
+                $stmt->bindParam(":nome", $nome);
+                $stmt->bindParam(":senha", $senha);
+                $stmt->bindParam(":email_antigo", $email_antigo);
+                $stmt->bindParam(":email_novo", $email_novo);
+    
+                return $stmt->execute();
+            }
+    
+            return false;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+    
 }
