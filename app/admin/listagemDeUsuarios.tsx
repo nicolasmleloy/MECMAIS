@@ -7,6 +7,7 @@ import { router } from "expo-router";
 
 export default function ListagemDeUsuarios() {
     interface Usuario {
+        id: string;
         nome: string;
         tipo: string;
         email: string;
@@ -15,7 +16,26 @@ export default function ListagemDeUsuarios() {
     }
 
     const [inputPesquisa, setInputPesquisa] = useState("");
+    const [dadosResposta, setDadosResposta] = useState([]);
     const [dadosUsuarios, setDadosUsuarios] = useState<Usuario[]>([]);
+
+    async function RemoverUsuario(usuario: string) {
+        const dados = {
+            usuario_a_remover: usuario
+        }
+        
+        const respostaUsuario = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        })
+
+        const dadosResposta = await respostaUsuario.json()
+        window.alert(`Usuário ${dadosResposta[0]} foi deletado!`)
+        setDadosResposta(dadosResposta)
+    }
 
     async function BuscarUsuarios(){
         const respostaUsuarios = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=buscarUsuarios", {
@@ -24,11 +44,12 @@ export default function ListagemDeUsuarios() {
 
         const dadosUsuarios = await respostaUsuarios.json();
         setDadosUsuarios(dadosUsuarios[0]);
+        console.log(dadosUsuarios[0]);
     }
 
     useEffect(() => {
         BuscarUsuarios();
-    }, [])
+    }, [dadosResposta])
     
     const dadosFiltrados = dadosUsuarios.filter(item =>
         item.nome.toLocaleLowerCase().includes(inputPesquisa.toLocaleLowerCase()) || 
@@ -81,7 +102,7 @@ export default function ListagemDeUsuarios() {
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => RemoverUsuario(item.id)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>

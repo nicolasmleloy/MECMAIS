@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $input = file_get_contents('php://input');
             $data = json_decode($input, true);
         
-            $resultado = $turmaController->UpdateTurma($data['turma_atual'], $data['turma_editado']);
+            $resultado = $turmaController->UpdateTurma($data['id'], $data['turma_atual'], $data['turma_editado']);
             echo json_encode([$resultado]);
             break;
 

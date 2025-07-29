@@ -16,7 +16,7 @@ export default function CadastroUsuario() {
     const [formEmail, setEmail] = useState("");
     const [formSenha, setSenha] = useState("");
     const [formConfirmarSenha, setFormConfirmarSenha] = useState("");
-    const [perfil, setPerfil] = useState("");
+    const [perfil, setPerfil] = useState("Professor(a)");
     const [formTurma, setTurma] = useState("");
     const [dadosTurmas, setDadosTurmas] = useState<Turma[]>([]);
 
@@ -36,9 +36,6 @@ export default function CadastroUsuario() {
     }, [])
 
     function validaCamposSenha(){
-        // console.log(formSenha);
-        // console.log(formConfirmarSenha);
-
         if(formSenha === formConfirmarSenha){
             EnviarDados();
         }else{

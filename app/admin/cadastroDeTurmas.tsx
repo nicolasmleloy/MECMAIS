@@ -7,6 +7,7 @@ import BtnVoltar from "../components/btnVoltar";
 export default function cadastroDeTurmas(){
     const [formTurmaAtual, setFormTurmaAtual] = useState("");
     const [formTurmaEditado, setFormTurmaEditado] = useState("");
+    const [idTurma, setIdTurma] = useState("");
 
     const params = useLocalSearchParams();
     const nomeBotao = params.modo === "editar" ? "Confirmar" : "Cadastrar";
@@ -14,6 +15,7 @@ export default function cadastroDeTurmas(){
 
     useEffect(() => {
         if(params.modo === "editar"){
+            setIdTurma(params.id as string)
             setFormTurmaAtual(params.turma as string)
             setFormTurmaEditado(params.turma as string)
         }
@@ -21,6 +23,7 @@ export default function cadastroDeTurmas(){
 
     async function DadosTurmas(){
         const dadosEditar = {
+            id: idTurma,
             turma_atual: formTurmaAtual,
             turma_editado: formTurmaEditado
         }

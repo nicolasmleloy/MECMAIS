@@ -22,7 +22,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $resultado = $usuarioController->UpdateUsuario($data['tipo_perfil'], $data['nome'], $data['email_antigo'], $data['email_novo'], $data['senha'], $data['turma']);
             echo json_encode([$resultado]);
             break;
+        case 'delete':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
         
+            $resultado = $turmaController->DeleteTurma($data['turma_a_remover']);
+            echo json_encode([$resultado]);
+            break;
         default:
             echo "Nao encontrei nada";
             break;

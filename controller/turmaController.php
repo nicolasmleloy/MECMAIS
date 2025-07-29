@@ -13,7 +13,7 @@ class TurmaController{
 
     public function BuscarTodasTurmas(){
         try {
-            $sql = "SELECT nome_turma FROM turma ORDER BY nome_turma";
+            $sql = "SELECT id, nome_turma FROM turma ORDER BY nome_turma";
             $db = $this->conn->prepare($sql);
             $db->execute();
             $resultTurma = $db->fetchAll(PDO::FETCH_ASSOC);

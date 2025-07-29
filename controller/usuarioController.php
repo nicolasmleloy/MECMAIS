@@ -13,19 +13,19 @@ class UsuarioController{
 
     public function BuscarTodosUsuarios(){
         try {
-            $sqlAlunos = "SELECT a.nome, a.email, a.senha, a.id_turma, 'Aluno(a)' AS tipo, t.nome_turma 
+            $sqlAlunos = "SELECT a.id, a.nome, a.email, a.senha, a.id_turma, 'Aluno(a)' AS tipo, t.nome_turma 
             FROM aluno a 
             LEFT JOIN turma t ON a.id_turma = t.id";
             $stmtAlunos = $this->conn->prepare($sqlAlunos);
             $stmtAlunos->execute();
             $alunos = $stmtAlunos->fetchAll(PDO::FETCH_ASSOC);
 
-            $sqlProfessores = "SELECT nome, email, senha, 'Professor(a)' AS tipo FROM professor";
+            $sqlProfessores = "SELECT id, nome, email, senha, 'Professor(a)' AS tipo FROM professor";
             $stmtProfessores = $this->conn->prepare($sqlProfessores);
             $stmtProfessores->execute();
             $professores = $stmtProfessores->fetchAll(PDO::FETCH_ASSOC);
 
-            $sqlCozinheiros = "SELECT nome, email, senha, 'Cozinheiro(a)' AS tipo FROM cozinha";
+            $sqlCozinheiros = "SELECT id, nome, email, senha, 'Cozinheiro(a)' AS tipo FROM cozinha";
             $stmtCozinheiros = $this->conn->prepare($sqlCozinheiros);
             $stmtCozinheiros->execute();
             $cozinheiros = $stmtCozinheiros->fetchAll(PDO::FETCH_ASSOC);

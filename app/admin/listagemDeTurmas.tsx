@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function listagemDeTurmas(){
     interface Turma {
+        id: string;
         nome_turma: string;
     }
 
@@ -40,6 +41,7 @@ export default function listagemDeTurmas(){
 
         const dadosTurmas = await respostaTurmas.json();
         setDadosTurmas(dadosTurmas[0]);
+        console.log(dadosTurmas[0]);
     }
 
     useEffect(() => {
@@ -87,7 +89,7 @@ export default function listagemDeTurmas(){
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => RemoverTurma(item.nome_turma)}>
+                                <TouchableOpacity onPress={() => RemoverTurma(item.id)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>
