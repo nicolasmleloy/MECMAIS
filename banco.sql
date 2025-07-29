@@ -44,6 +44,7 @@ CREATE TABLE CHAMADA(
 
 CREATE TABLE COZINHA(
     id int PRIMARY KEY AUTO_INCREMENT,
+    nome  varchar(250),
     email varchar(250),
     senha varchar(20)
 );
