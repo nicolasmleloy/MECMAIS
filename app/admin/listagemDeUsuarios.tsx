@@ -19,9 +19,10 @@ export default function ListagemDeUsuarios() {
     const [dadosResposta, setDadosResposta] = useState([]);
     const [dadosUsuarios, setDadosUsuarios] = useState<Usuario[]>([]);
 
-    async function RemoverUsuario(usuario: string) {
+    async function RemoverUsuario(idUsuario: string, nomeUsuario: string, tipoPerfil: string) {
         const dados = {
-            usuario_a_remover: usuario
+            idUsuario: idUsuario,
+            tipoPerfil: tipoPerfil
         }
         
         const respostaUsuario = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=delete", {
@@ -33,7 +34,7 @@ export default function ListagemDeUsuarios() {
         })
 
         const dadosResposta = await respostaUsuario.json()
-        window.alert(`Usuário ${dadosResposta[0]} foi deletado!`)
+        window.alert(`Usuário ${nomeUsuario} foi deletado!`)
         setDadosResposta(dadosResposta)
     }
 
@@ -44,7 +45,6 @@ export default function ListagemDeUsuarios() {
 
         const dadosUsuarios = await respostaUsuarios.json();
         setDadosUsuarios(dadosUsuarios[0]);
-        console.log(dadosUsuarios[0]);
     }
 
     useEffect(() => {
@@ -103,7 +103,7 @@ export default function ListagemDeUsuarios() {
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => RemoverUsuario(item.id)}>
+                                <TouchableOpacity onPress={() => RemoverUsuario(item.id, item.nome, item.tipo)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>

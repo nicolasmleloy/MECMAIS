@@ -6,7 +6,6 @@ import FooterOpcoes from "../components/footerOpcoes";
 
 export default function DashboardAlunoPais() {
   const { tp } = useLocalSearchParams();
-  console.log(tp);
 
   const [dateTime, setDateTime] = useState(new Date());
 

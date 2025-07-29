@@ -95,7 +95,7 @@ class UsuarioController{
         }
     }
 
-    public function UpdateUsuario($tipo_perfil, $nome, $email_antigo, $email_novo, $senha, $turma){
+    public function UpdateUsuario($idUsuario, $tipo_perfil, $nome, $email_antigo, $email_novo, $senha, $turma){
         try {
             if (!in_array($tipo_perfil, ["Aluno(a)", "Professor(a)", "Cozinheiro(a)"])) {
                 throw new Exception("Tipo de perfil inválido: " . $tipo_perfil);
@@ -114,39 +114,68 @@ class UsuarioController{
     
                 $id_turma = $resultTurma['id'];
     
-                $sqlUpdate = "UPDATE aluno SET nome = :nome, email = :email_novo, senha = :senha, id_turma = :id_turma WHERE email = :email_antigo";
+                $sqlUpdate = "UPDATE aluno SET nome = :nome, email = :email_novo, senha = :senha, id_turma = :id_turma WHERE id = :id_usuario";
                 $stmtUpdate = $this->conn->prepare($sqlUpdate);
                 $stmtUpdate->bindParam(":nome", $nome);
                 $stmtUpdate->bindParam(":senha", $senha);
-                $stmtUpdate->bindParam(":email_antigo", $email_antigo);
                 $stmtUpdate->bindParam(":email_novo", $email_novo);
                 $stmtUpdate->bindParam(":id_turma", $id_turma);
+                $stmtUpdate->bindParam(":id_usuario", $idUsuario);
     
                 return $stmtUpdate->execute();
             }
             else if($tipo_perfil == "Professor(a)") {
-                $sqlUpdate = "UPDATE professor SET nome = :nome, senha = :senha, email = :email_novo WHERE email = :email_antigo";
+                $sqlUpdate = "UPDATE professor SET nome = :nome, senha = :senha, email = :email_novo WHERE id = :id_usuario";
                 $stmt = $this->conn->prepare($sqlUpdate);
                 $stmt->bindParam(":nome", $nome);
-                $stmt->bindParam(":email_antigo", $email_antigo);
                 $stmt->bindParam(":email_novo", $email_novo);
                 $stmt->bindParam(":senha", $senha);
+                $stmt->bindParam(":id_usuario", $idUsuario);
     
                 return $stmt->execute();
             }
             else if($tipo_perfil == "Cozinheiro(a)") {
-                $sqlUpdate = "UPDATE cozinha SET nome = :nome, senha = :senha, email = :email_novo WHERE email = :email_antigo";
+                $sqlUpdate = "UPDATE cozinha SET nome = :nome, senha = :senha, email = :email_novo WHERE id = :id_usuario";
                 $stmt = $this->conn->prepare($sqlUpdate);
                 $stmt->bindParam(":nome", $nome);
                 $stmt->bindParam(":senha", $senha);
-                $stmt->bindParam(":email_antigo", $email_antigo);
                 $stmt->bindParam(":email_novo", $email_novo);
+                $stmt->bindParam(":id_usuario", $idUsuario);
     
                 return $stmt->execute();
             }
     
             return false;
         } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+
+    public function DeleteUsuario($idUsuario, $tipo_perfil){
+        try{
+            if($tipo_perfil === "Aluno(a)"){
+                $this->conn->beginTransaction();
+                $sql = "DELETE FROM aluno WHERE id = :idUsuario";
+            }else if($tipo_perfil === "Professor(a)"){
+                $this->conn->beginTransaction();
+                $sql = "DELETE FROM professor WHERE id = :idUsuario";
+            }else if($tipo_perfil === "Cozinheiro(a)"){
+                $this->conn->beginTransaction();
+                $sql = "DELETE FROM cozinha WHERE id = :idUsuario";
+            }
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":idUsuario", $idUsuario);
+            $stmt->execute();
+            $this->conn->commit();
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }catch(\Throwable $th) {
             return $th->getMessage();
         }
     }

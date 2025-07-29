@@ -41,7 +41,6 @@ export default function listagemDeTurmas(){
 
         const dadosTurmas = await respostaTurmas.json();
         setDadosTurmas(dadosTurmas[0]);
-        console.log(dadosTurmas[0]);
     }
 
     useEffect(() => {

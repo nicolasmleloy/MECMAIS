@@ -27,7 +27,7 @@ export default function CadastroUsuario() {
 
     useEffect(() => {
         if(params.modo === "editar"){
-            setIdUsuario(params.id as string || "");
+            setIdUsuario(params.idUsuario as string || "");
             setNome(params.nome as string || "");
             setEmail(params.email as string || "");
             setSenha(params.senha as string || "");
@@ -60,6 +60,7 @@ export default function CadastroUsuario() {
 
     async function EnviarDados(){
         const dadosEditar = {
+            idUsuario: idUsuario,
             tipo_perfil: perfil,
             nome: formNome,
             email_antigo: params.email,
