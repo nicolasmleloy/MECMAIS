@@ -1,8 +1,6 @@
 ﻿import { useState } from "react";
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { router } from "expo-router";
 import Header from "../components/header";
 import SelecaoTurma from "../components/Turmasele";
 import ListaAlunosPorTurma from "../components/listaAlunos";
@@ -12,6 +10,10 @@ import BtnVoltar from "../components/btnVoltar";
 export default function Chamada() {
   const [turmaSelecionada, setTurmaSelecionada] = useState("");
   const [mostrarPopup, setMostrarPopup] = useState(false);
+
+  function Confirmateste(){
+    console.log("Confirmado");
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -40,7 +42,7 @@ export default function Chamada() {
 
       </View>
 
-      <ConfirmacaoPopup visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
+      <ConfirmacaoPopup function={Confirmateste} Tipo_compon="Deletar" mensagem="Enviado com sucesso!" visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
       <BtnVoltar/>
     </View>
   );
