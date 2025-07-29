@@ -92,6 +92,7 @@ export default function ListagemDeUsuarios() {
                                 <TouchableOpacity onPress={() => router.push({
                                     pathname: "/admin/cadastroUsuario",
                                     params: {
+                                        idUsuario: item.id,
                                         nome: item.nome,
                                         tipo: item.tipo,
                                         email: item.email,

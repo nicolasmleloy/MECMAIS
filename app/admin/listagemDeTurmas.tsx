@@ -16,9 +16,9 @@ export default function listagemDeTurmas(){
     const [dadosResposta, setDadosResposta] = useState([]);
 
     
-    async function RemoverTurma(turma: string) {
+    async function RemoverTurma(idTurma: string, nomeTurma: string) {
         const dados = {
-            turma_a_remover: turma
+            idTurma: idTurma
         }
         
         const respostaTurmas = await fetch("http://localhost/MECMAIS/router/turmaRouter.php?acao=delete", {
@@ -30,7 +30,7 @@ export default function listagemDeTurmas(){
         })
 
         const dadosResposta = await respostaTurmas.json()
-        window.alert(`Turma deletada: ${dadosResposta[0]}`)
+        window.alert(`Turma deletada: ${nomeTurma}`)
         setDadosResposta(dadosResposta)
     }
 
@@ -83,13 +83,14 @@ export default function listagemDeTurmas(){
                                 <TouchableOpacity onPress={() => router.push({
                                     pathname: "/admin/cadastroDeTurmas",
                                     params: {
+                                        idTurma: item.id,
                                         turma: item.nome_turma,
                                         modo: "editar"
                                     }
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => RemoverTurma(item.id)}>
+                                <TouchableOpacity onPress={() => RemoverTurma(item.id, item.nome_turma)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>

@@ -15,7 +15,7 @@ export default function cadastroDeTurmas(){
 
     useEffect(() => {
         if(params.modo === "editar"){
-            setIdTurma(params.id as string)
+            setIdTurma(params.idTurma as string)
             setFormTurmaAtual(params.turma as string)
             setFormTurmaEditado(params.turma as string)
         }
@@ -23,7 +23,7 @@ export default function cadastroDeTurmas(){
 
     async function DadosTurmas(){
         const dadosEditar = {
-            id: idTurma,
+            idTurma: idTurma,
             turma_atual: formTurmaAtual,
             turma_editado: formTurmaEditado
         }
@@ -44,7 +44,7 @@ export default function cadastroDeTurmas(){
             const dadosResposta = await resposta.json()
             
             if(dadosResposta[0]){
-                window.alert(`Editado com sucesso: ${formTurmaEditado}`)
+                window.alert(`Turma ${dadosEditar.turma_atual} editada com sucesso!`)
             }else{
                 window.alert(`Não foi possível editar!`)
             }

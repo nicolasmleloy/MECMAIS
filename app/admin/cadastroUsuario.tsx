@@ -18,6 +18,7 @@ export default function CadastroUsuario() {
     const [formConfirmarSenha, setFormConfirmarSenha] = useState("");
     const [perfil, setPerfil] = useState("Professor(a)");
     const [formTurma, setTurma] = useState("");
+    const [idUsuario, setIdUsuario] = useState("");
     const [dadosTurmas, setDadosTurmas] = useState<Turma[]>([]);
 
     const params = useLocalSearchParams();
@@ -26,6 +27,7 @@ export default function CadastroUsuario() {
 
     useEffect(() => {
         if(params.modo === "editar"){
+            setIdUsuario(params.id as string || "");
             setNome(params.nome as string || "");
             setEmail(params.email as string || "");
             setSenha(params.senha as string || "");

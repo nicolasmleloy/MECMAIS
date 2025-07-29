@@ -54,13 +54,14 @@ class TurmaController{
         }
     }
 
-    public function UpdateTurma($nome_turma_atual, $nome_turma_editado){
+    public function UpdateTurma($idTurma, $nome_turma_editado){
         try{
-            $sqlTurma = "UPDATE turma SET nome_turma = :nome_turma_editado WHERE nome_turma = :nome_turma_atual";
+            $sqlTurma = "UPDATE turma SET nome_turma = :nome_turma_editado WHERE id = :id_turma";
             $db = $this->conn->prepare($sqlTurma);
-            $db->bindParam(":nome_turma_atual", $nome_turma_atual);
+            $db->bindParam(":id_turma", $idTurma);
             $db->bindParam(":nome_turma_editado", $nome_turma_editado);
             $db->execute();
+            $this->conn->commit();
             
             if ($db->execute()) {
                 return true;
@@ -72,35 +73,26 @@ class TurmaController{
         }
     }
 
-    public function DeleteTurma($nome_turma){
+    public function DeleteTurma($idTurma){
         try{
             $this->conn->beginTransaction();
-
-            $sqlBuscaId = "SELECT id FROM turma WHERE nome_turma = :nome_turma LIMIT 1";
-            $stmtBusca = $this->conn->prepare($sqlBuscaId);
-            $stmtBusca->bindParam(":nome_turma", $nome_turma);
-            $stmtBusca->execute();
-            $resultado = $stmtBusca->fetch(PDO::FETCH_ASSOC);
-
-            if (!$resultado) {
-                $this->conn->rollBack();
-                return "Turma não encontrada";
-            }
-
-            $id_turma = $resultado['id'];
-
             $sqlDeleteAlunos = "DELETE FROM aluno WHERE id_turma = :id_turma";
             $stmtAlunos = $this->conn->prepare($sqlDeleteAlunos);
-            $stmtAlunos->bindParam(":id_turma", $id_turma);
+            $stmtAlunos->bindParam(":id_turma", $idTurma);
             $stmtAlunos->execute();
 
             $sqlDeleteTurma = "DELETE FROM turma WHERE id = :id_turma";
             $stmtTurma = $this->conn->prepare($sqlDeleteTurma);
-            $stmtTurma->bindParam(":id_turma", $id_turma);
+            $stmtTurma->bindParam(":id_turma", $idTurma);
             $stmtTurma->execute();
 
             $this->conn->commit();
-            return $nome_turma;
+
+            if ($stmtAlunos->execute() && $stmtTurma->execute()) {
+                return true;
+            } else {
+                return false;
+            }
         }catch(\Throwable $th) {
             return $th->getMessage();
         }
