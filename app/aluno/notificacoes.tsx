@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View} from "react-native";
 import Header from "../components/header";
 import FooterOpcoes from "../components/footerOpcoes";
 import Notificacao from "../components/notificacao";
