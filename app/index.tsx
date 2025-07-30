@@ -36,9 +36,9 @@ export default function Index() {
         </View>
 
       </View>
-      <View className="ml-1 mb-1">
+      <View className="ml-1 mb-1 justufy-center w-full">
         <Link href="/login/login?tp=admin">
-          <Text className="text-gray-500 text-xs">Área administrativa</Text>
+          <Text className="text-gray-500 text-xs text-center">Área administrativa</Text>
         </Link>
       </View>
     </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TextInput, TouchableOpacity} from "react-native";
 import Header from "../components/header";
 import { Picker } from "@react-native-picker/picker";
 import ConfirmacaoPopup from "../components/confirChama";
