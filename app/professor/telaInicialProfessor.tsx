@@ -17,6 +17,7 @@ export default function TelaInicialProfessor() {
       try {
         const response = await fetch(`http://localhost/MECMAIS/router/chamadaRouter.php?acao=buscarNomeProfessor&id=${id}`);
         const data = await response.json();
+        console.log(data)
         if (data.nome) {
           setNome(data.nome);
         } else {

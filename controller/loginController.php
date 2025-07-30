@@ -14,10 +14,10 @@ class LoginController {
             $usuarios = [];
 
             $consultas = [
-                "SELECT email, senha, 'aluno' AS tipo FROM aluno",
-                "SELECT email, senha, 'professor' AS tipo FROM professor",
-                "SELECT email, senha, 'cozinha' AS tipo FROM cozinha",
-                "SELECT email, senha, 'admin' AS tipo FROM admin"
+                "SELECT id, email, senha, 'aluno' AS tipo FROM aluno",
+                "SELECT id, email, senha, 'professor' AS tipo FROM professor",
+                "SELECT id, email, senha, 'cozinha' AS tipo FROM cozinha",
+                "SELECT id, email, senha, 'admin' AS tipo FROM admin"
             ];
 
             foreach ($consultas as $sql) {

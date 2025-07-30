@@ -26,6 +26,7 @@ export default function Login() {
       });
 
       const data = await response.json();
+      console.log(data.user)
 
       if (data.success) {
       
@@ -36,7 +37,7 @@ export default function Login() {
           case "professor":
             router.push({
               pathname: "/professor/telaInicialProfessor",
-              params: { id: data.id }, 
+              params: { id: data.user.id }, 
             });
             break;
           case "cozinha":
