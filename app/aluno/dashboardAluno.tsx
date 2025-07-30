@@ -4,10 +4,31 @@ import { useLocalSearchParams } from "expo-router";
 import Header from "../components/header";
 import FooterOpcoes from "../components/footerOpcoes";
 
-export default function DashboardAlunoPais() {
-  const { tp } = useLocalSearchParams();
-
+export default function DashboardAluno() {
+  const { id } = useLocalSearchParams(); 
+  const [nome, setNome] = useState("");
   const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    if (!id) return;
+
+    async function buscarNome() {
+      try {
+        const response = await fetch(`http://localhost/MECMAIS/router/alunoRouter.php?acao=buscarNomeAluno&id=${id}`);
+        const data = await response.json();
+        console.log(data)
+        if (data.nome) {
+          setNome(data.nome);
+        } else {
+          setNome("Desconhecido");
+        }
+      } catch (error) {
+        setNome("Erro ao buscar nome");
+      }
+    }
+
+    buscarNome();
+  }, [id]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -22,7 +43,7 @@ export default function DashboardAlunoPais() {
     <View className="flex">
       <Header tipo="semPerfil"/>
             <View className="flex-1 justify-center items-center">
-                <Text className="text-[30px]  mt-5 mb-6 font-bold text-black text-center">Olá Aluno(a):</Text>
+                <Text className="text-[30px]  mt-5 mb-6 font-bold text-black text-center">Olá Aluno(a): {nome}</Text>
             
                 <View className="flex-row m-1 justify-between p-5 rounded-[20px] bg-[#E4ECFD] shadow">
                     <View className="w-[100px] justify-center">

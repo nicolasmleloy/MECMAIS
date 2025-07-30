@@ -8,10 +8,7 @@ import React, { useState } from "react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
-
   const { tp } = useLocalSearchParams();
-
   const handleLogin = async () => {
     if (!email || !senha) {
       Alert.alert("Erro", "Preencha todos os campos!");
@@ -44,7 +41,9 @@ export default function Login() {
             router.push("/cozinha/dashboardCozinha");
             break;
           case "aluno":
-            router.push("/aluno/dashboardAluno");
+            router.push({
+            pathname:"/aluno/dashboardAluno",
+            params:{id: data.user.id}});
             break;
           default:
             Alert.alert("Erro", "Tipo de usuário desconhecido.");
