@@ -20,6 +20,13 @@ switch ($acao) {
         $turma = $_GET['turma'] ?? '';
         echo json_encode($chamada->BuscarAlunosPorTurma($turma));
         break;
+    case 'enviarPresencas':
+        $json = file_get_contents("php://input");
+        $data = json_decode($json, true);
+        $ids = $data['ids'] ?? [];
+        $turma = $data['turma'] ?? '';
+        echo json_encode($chamada->EnviarPresencas($ids, $turma));
+        break;
     default:
         echo json_encode(["erro" => "Ação inválida"]);
         break;

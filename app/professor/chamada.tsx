@@ -22,10 +22,26 @@ export default function Chamada() {
   const [turmaSelecionada, setTurmaSelecionada] = useState<string>("");
   const [alunos, setAlunos] = useState<Aluno[]>([]);
   const [totalPresentes, setTotalPresentes] = useState<number>(0);
+  const [alunosPresentes, setAlunosPresentes] = useState<Aluno[]>([]);
   
   function Confirmateste(){
     console.log("Confirmado");
   };
+
+  async function EnviarPresencas() {
+    const ids = alunosPresentes.map(a => a.id);
+
+    const resposta = await fetch("http://localhost/MECMAIS/router/chamadaRouter.php?acao=enviarPresencas", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ ids, turma: turmaSelecionada })
+    });
+
+    const dadosResposta = await resposta.json();
+    console.log(dadosResposta);
+  }
 
   useEffect(() => {
     async function buscarTurmas() {
@@ -59,6 +75,7 @@ export default function Chamada() {
     copia[index].presente = !copia[index].presente;
     setAlunos(copia);
     setTotalPresentes(copia.filter(a => a.presente).length);
+    setAlunosPresentes(copia.filter(a => a.presente))
   };
 
   return (
@@ -108,7 +125,7 @@ export default function Chamada() {
     <View className="px-4 py-4 mb-5">
       <TouchableOpacity
         className="bg-green-700 py-3 rounded-lg shadow-md mb-3"
-        onPress={() => setMostrarPopup(true)}
+        onPress={() => EnviarPresencas()}
       >
         <Text className="text-white text-center font-semibold text-lg">Concluir</Text>
       </TouchableOpacity>
