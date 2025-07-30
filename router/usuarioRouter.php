@@ -6,7 +6,6 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 $usuarioController = new UsuarioController();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
     switch ($_GET["acao"]) {
         case 'create':
             $input = file_get_contents('php://input');
@@ -19,14 +18,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $input = file_get_contents('php://input');
             $data = json_decode($input, true);
 
-            $resultado = $usuarioController->UpdateUsuario($data['tipo_perfil'], $data['nome'], $data['email_antigo'], $data['email_novo'], $data['senha'], $data['turma']);
+            $resultado = $usuarioController->UpdateUsuario($data['idUsuario'], $data['tipo_perfil'], $data['nome'], $data['email_antigo'], $data['email_novo'], $data['senha'], $data['turma']);
             echo json_encode([$resultado]);
             break;
         case 'delete':
             $input = file_get_contents('php://input');
             $data = json_decode($input, true);
         
-            $resultado = $turmaController->DeleteTurma($data['turma_a_remover']);
+            $resultado = $usuarioController->DeleteUsuario($data['idUsuario'], $data['tipoPerfil']);
             echo json_encode([$resultado]);
             break;
         default:

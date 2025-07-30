@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import Header from "../components/header";
 import BtnVoltar from "../components/btnVoltar";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
+import ConfirmacaoPopup from "../components/confirChama";
 
 export default function ListagemDeUsuarios() {
     interface Usuario {
@@ -15,13 +16,17 @@ export default function ListagemDeUsuarios() {
         nome_turma: string;
     }
 
+    const [usuarioSelecionado, setUsuarioSelecionado] = useState<Usuario | null>(null);
+    const [usuarioRemovido, setUsuarioRemovido] = useState<string | null>(null);
+    const [popUpRemovido, setPopUpRemovido] = useState(false);
     const [inputPesquisa, setInputPesquisa] = useState("");
     const [dadosResposta, setDadosResposta] = useState([]);
     const [dadosUsuarios, setDadosUsuarios] = useState<Usuario[]>([]);
 
-    async function RemoverUsuario(usuario: string) {
+    async function RemoverUsuario(idUsuario: string, nomeUsuario: string, tipoPerfil: string) {
         const dados = {
-            usuario_a_remover: usuario
+            idUsuario: idUsuario,
+            tipoPerfil: tipoPerfil
         }
         
         const respostaUsuario = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=delete", {
@@ -33,7 +38,8 @@ export default function ListagemDeUsuarios() {
         })
 
         const dadosResposta = await respostaUsuario.json()
-        window.alert(`Usuário ${dadosResposta[0]} foi deletado!`)
+        setUsuarioRemovido(nomeUsuario);
+        setPopUpRemovido(true);
         setDadosResposta(dadosResposta)
     }
 
@@ -44,7 +50,6 @@ export default function ListagemDeUsuarios() {
 
         const dadosUsuarios = await respostaUsuarios.json();
         setDadosUsuarios(dadosUsuarios[0]);
-        console.log(dadosUsuarios[0]);
     }
 
     useEffect(() => {
@@ -92,6 +97,7 @@ export default function ListagemDeUsuarios() {
                                 <TouchableOpacity onPress={() => router.push({
                                     pathname: "/admin/cadastroUsuario",
                                     params: {
+                                        idUsuario: item.id,
                                         nome: item.nome,
                                         tipo: item.tipo,
                                         email: item.email,
@@ -102,7 +108,7 @@ export default function ListagemDeUsuarios() {
                                 })}>
                                     <Ionicons name="create-outline" size={20} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => RemoverUsuario(item.id)}>
+                                <TouchableOpacity onPress={() => setUsuarioSelecionado(item)}>
                                     <Ionicons name="trash-outline" size={20} color="#000" />
                                 </TouchableOpacity>
                             </View>
@@ -115,11 +121,32 @@ export default function ListagemDeUsuarios() {
             <View className="flex items-center mt-5">
                 <TouchableOpacity onPress={() => router.push("/admin/cadastroUsuario")} 
                 className="flex-row items-center gap-2 justify-center w-[70%] p-4 rounded-lg bg-green-700 shadow-md font-semibold text-white text-lg">
-                Novo Cadastro
+                <Text>Novo Cadastro</Text>
                 <Ionicons name="add-outline" size={30} color="#fff" />
                 </TouchableOpacity>
             </View>
             <BtnVoltar />
+
+            {usuarioSelecionado && (
+                <ConfirmacaoPopup
+                    function={() => {
+                        RemoverUsuario(usuarioSelecionado.id, usuarioSelecionado.nome, usuarioSelecionado.tipo);
+                        setUsuarioSelecionado(null);
+                    }}
+                    Tipo_compon="Deletar"
+                    mensagem={`Deseja deletar "${usuarioSelecionado.nome}"?`}
+                    visible={true}
+                    onClose={() => setUsuarioSelecionado(null)}
+                />
+            )}
+
+            <ConfirmacaoPopup
+                function={() => setPopUpRemovido(false)}
+                Tipo_compon="ConfirmarComImagem"
+                mensagem={`${usuarioRemovido} removido com sucesso!`}
+                visible={popUpRemovido}
+                onClose={() => setPopUpRemovido(false)}
+            />
         </View>
     );
 }

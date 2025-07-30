@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import Header from "../components/header";
 import FooterOpcoes from "../components/footerOpcoes";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 
 export default function CardapioAluno() {
