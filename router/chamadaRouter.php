@@ -5,6 +5,10 @@ $acao = $_GET['acao'] ?? '';
 $chamada = new ChamadaController();
 
 switch ($acao) {
+    case 'buscarNomeProfessor':
+        $id = $_GET['id'] ?? '';
+        echo json_encode($chamada->BuscarNomeProfessor($id));
+        break;
     case 'buscarTurmas':
         echo json_encode($chamada->BuscarTurmas());
         break;

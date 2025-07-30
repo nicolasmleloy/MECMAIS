@@ -34,7 +34,10 @@ export default function Login() {
             router.push("/admin/opcoesAdm");
             break;
           case "professor":
-            router.push("/professor/telaInicialProfessor");
+            router.push({
+              pathname: "/professor/telaInicialProfessor",
+              params: { id: data.id }, 
+            });
             break;
           case "cozinha":
             router.push("/cozinha/dashboardCozinha");

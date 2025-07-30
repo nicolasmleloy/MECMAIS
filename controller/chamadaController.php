@@ -10,6 +10,18 @@ class ChamadaController {
         $this->conn = $banco->Connect();
     }
 
+    public function BuscarNomeProfessor($idProfessor) {
+        try {
+            $sql = "SELECT nome FROM professor WHERE id = :id";
+            $db = $this->conn->prepare($sql);
+            $db->bindParam(":id", $idProfessor);
+            $db->execute();
+            return $db->fetch(PDO::FETCH_ASSOC);
+        } catch (\Throwable $th) {
+            return ["erro" => $th->getMessage()];
+        }
+    }
+
     public function BuscarTurmas() {
         try {
             $sql = "SELECT id, nome_turma FROM turma ORDER BY nome_turma";
@@ -23,13 +35,28 @@ class ChamadaController {
 
     public function BuscarAlunosPorTurma($nomeTurma) {
         try {
-            $sql = "SELECT id, nome FROM aluno WHERE nome_turma = :nome_turma";
+            $sqlTurma = "SELECT id FROM turma WHERE nome_turma = :nome_turma";
+            $stmtTurma = $this->conn->prepare($sqlTurma);
+            $stmtTurma->bindParam(":nome_turma", $nomeTurma);
+            $stmtTurma->execute();
+            $turma = $stmtTurma->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$turma) {
+                return ["erro" => "Turma não encontrada"];
+            }
+    
+            $idTurma = $turma['id'];
+    
+            $sql = "SELECT id, nome FROM aluno WHERE id_turma = :id_turma";
             $db = $this->conn->prepare($sql);
-            $db->bindParam(":nome_turma", $nome_turma);
-            $db->execute([$nomeTurma]);
+            $db->bindParam(":id_turma", $idTurma);
+            $db->execute();
+    
             return $db->fetchAll(PDO::FETCH_ASSOC);
         } catch (\Throwable $th) {
             return ["erro" => $th->getMessage()];
         }
     }
+    
 }
+
