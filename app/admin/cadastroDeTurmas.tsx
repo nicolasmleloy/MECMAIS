@@ -3,8 +3,11 @@ import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import Header from "../components/header";
 import { router, useLocalSearchParams } from "expo-router";
 import BtnVoltar from "../components/btnVoltar";
+import ConfirmacaoPopup from "../components/confirChama";
 
 export default function cadastroDeTurmas(){
+    const [mostrarPopup, setMostrarPopup] = useState(false);
+    const [mostrarPopupEditar, setmostrarPopupEditar] = useState(false);
     const [formTurmaAtual, setFormTurmaAtual] = useState("");
     const [formTurmaEditado, setFormTurmaEditado] = useState("");
     const [idTurma, setIdTurma] = useState("");
@@ -20,6 +23,15 @@ export default function cadastroDeTurmas(){
             setFormTurmaEditado(params.turma as string)
         }
     }, [])
+
+    function fecharPopupERedirecionar() {
+        if(params.modo === "editar"){
+            setmostrarPopupEditar(false);
+        }else{
+            setMostrarPopup(false);
+        }
+        router.push("/admin/listagemDeTurmas");
+    }
 
     async function DadosTurmas(){
         const dadosEditar = {
@@ -44,12 +56,11 @@ export default function cadastroDeTurmas(){
             const dadosResposta = await resposta.json()
             
             if(dadosResposta[0]){
-                window.alert(`Turma ${dadosEditar.turma_atual} editada com sucesso!`)
+                setmostrarPopupEditar(true);
             }else{
                 window.alert(`Não foi possível editar!`)
             }
 
-            router.push("/admin/listagemDeTurmas");
         }else{
             const resposta = await fetch("http://localhost/MECMAIS/router/turmaRouter.php?acao=create", {
                 method: "POST",
@@ -62,7 +73,7 @@ export default function cadastroDeTurmas(){
             const dadosResposta = await resposta.json()
             
             if(dadosResposta[0]){
-                window.alert(`Adicionado com sucesso: ${formTurmaEditado}`)
+                setMostrarPopup(true);
             }else{
                 window.alert(`Turma já existe no banco de dados!`)
             }
@@ -86,7 +97,9 @@ export default function cadastroDeTurmas(){
                     <Text className="text-white text-xl font-semibold">{nomeBotao}</Text>
                 </TouchableOpacity>
             </View>
-
+            
+            <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem={`"${formTurmaEditado}" cadastrado com sucesso!`} visible={mostrarPopup} onClose={fecharPopupERedirecionar} />
+            <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem={`"${formTurmaAtual}" editado com sucesso!`} visible={mostrarPopupEditar} onClose={fecharPopupERedirecionar} />
             <BtnVoltar/>
         </View>
     )

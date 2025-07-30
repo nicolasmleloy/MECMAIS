@@ -12,6 +12,9 @@ export default function CadastroUsuario() {
     }
 
     const [mostrarPopup, setMostrarPopup] = useState(false);
+    const [mostrarPopupEditado, setmostrarPopupEditado] = useState(false);
+    const [mostrarPopupSenhas, setmostrarPopupSenhas] = useState(false);
+    const [mostrarPopupCampos, setmostrarPopupCampos] = useState(false);
     const [formNome, setNome] = useState("");
     const [formEmail, setEmail] = useState("");
     const [formSenha, setSenha] = useState("");
@@ -37,12 +40,34 @@ export default function CadastroUsuario() {
         }
     }, [])
 
-    function validaCamposSenha(){
-        if(formSenha === formConfirmarSenha){
-            EnviarDados();
-        }else{
-            window.alert("Os campos de senhas devem ser iguais!");
+    function fecharPopupERedirecionar() {
+        if(params.modo === "editar")
+            setmostrarPopupEditado(false);
+        else
+            setMostrarPopup(false);
+
+        router.push("/admin/listagemDeUsuarios");
+    }
+
+    function validaCamposSenha() {
+        const camposVazios = 
+            !formNome.trim() || 
+            !formEmail.trim() || 
+            !formSenha.trim() || 
+            !formConfirmarSenha.trim() || 
+            (perfil === "Aluno(a)" && !formTurma.trim());
+
+        if (camposVazios) {
+            setmostrarPopupCampos(true);
+            return;
         }
+
+        if (formSenha !== formConfirmarSenha) {
+            setmostrarPopupSenhas(true);
+            return;
+        }
+
+        EnviarDados();
     }
 
     async function BuscarTurmas(){
@@ -89,13 +114,10 @@ export default function CadastroUsuario() {
             const dadosResposta = await resposta.json()
             
             if(dadosResposta[0]){
-                window.alert(`Dados de ${formNome} editados com sucesso!`)
+                setmostrarPopupEditado(true);
             }else{
                 window.alert(`Não foi possível editar!`)
-            }
-
-            router.push("/admin/listagemDeUsuarios");
-            
+            }            
         }else{
             const resposta = await fetch("http://localhost/MECMAIS/router/usuarioRouter.php?acao=create", { //verificar a url
                 method: "POST",
@@ -106,7 +128,7 @@ export default function CadastroUsuario() {
             })
             const dadosResposta = await resposta.json();
             if(dadosResposta[0]){
-                window.alert(`Adicionado com sucesso: ${formNome}`);
+                setMostrarPopup(true);
             }else{
                 window.alert(`Erro: algo de errado aconteceu!`);
             }
@@ -182,7 +204,10 @@ export default function CadastroUsuario() {
                 </TouchableOpacity>
             </View>
 
-            <ConfirmacaoPopup Tipo_compon="Cadastro" visible={mostrarPopup} onClose={() => setMostrarPopup(false)}/>
+            <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem={`"${formNome}" cadastrado com sucesso!`} visible={mostrarPopup} onClose={fecharPopupERedirecionar} />
+            <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem={`"${formNome}" editado com sucesso!`} visible={mostrarPopupEditado} onClose={fecharPopupERedirecionar} />
+            <ConfirmacaoPopup function={() => null} Tipo_compon="Confirmar" mensagem="Os campos de senhas devem ser iguais!" visible={mostrarPopupSenhas} onClose={() => setmostrarPopupSenhas(false)} />
+            <ConfirmacaoPopup function={() => null} Tipo_compon="Confirmar" mensagem="Todos os campos devem ser preenchidos!" visible={mostrarPopupCampos} onClose={() => setmostrarPopupCampos(false)} />
             <BtnVoltar/>
         </View>
     )

@@ -179,7 +179,7 @@ export default function CadastroUsuario() {
                 </TouchableOpacity>
             </View>
 
-            <ConfirmacaoPopup Tipo_compon="Cadastro" visible={mostrarPopup} onClose={() => setMostrarPopup(false)}/>
+            {/* <ConfirmacaoPopup Tipo_compon="Cadastro" visible={mostrarPopup} onClose={() => setMostrarPopup(false)}/> */}
             <BtnVoltar/>
         </View>
     )
