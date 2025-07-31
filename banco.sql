@@ -133,6 +133,3 @@ INSERT INTO INGREDIENTES (nome, porcao, tipo_porcao) VALUES
 ('Leite', 200, 'ml'),
 ('Pão francês', 1, 'un'),
 ('Carne moída', 140, 'g');
-
-
-
