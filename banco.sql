@@ -62,6 +62,8 @@ CREATE TABLE PROFESSOR(
     senha varchar(20) NOT NULL
 );
 
+ALTER TABLE chamada ADD COLUMN data_chamada DATE DEFAULT CURRENT_DATE;
+
 INSERT INTO ADMIN (email, senha) VALUES 
 ('admin@mecmais.com', 'admin123');
 

@@ -191,6 +191,7 @@ export default function CadastroUsuario() {
                         className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-5 shadow-sm"
                         dropdownIconColor="#000"
                         >
+                        <Picker.Item label="Selecione uma turma" value="" />
                         {dadosTurmas.map((item, index) => (
                             <View key={index}>
                                 <Picker.Item label={item.nome_turma} value={item.nome_turma}/>

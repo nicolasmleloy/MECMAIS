@@ -24,7 +24,7 @@ class AlunoController {
     
     public function BuscarChamada($idAluno) {
         try {
-            $sql = "SELECT presenca FROM chamada WHERE id_aluno = :id ORDER BY id DESC LIMIT 1";
+            $sql = "SELECT presenca FROM chamada WHERE id_aluno = :id AND data_chamada = CURDATE() ORDER BY id DESC LIMIT 1";
             $db = $this->conn->prepare($sql);
             $db->bindParam(":id", $idAluno);
             $db->execute();

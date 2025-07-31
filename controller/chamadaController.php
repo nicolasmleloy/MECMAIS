@@ -78,36 +78,35 @@ class ChamadaController {
             $idTurma = $turma['id'];
             $mensagens = [];
     
-            $sqlCheckTurma = "SELECT COUNT(*) FROM chamada WHERE id_turma = :id_turma";
+            $sqlCheckTurma = "SELECT COUNT(*) FROM chamada WHERE id_turma = :id_turma AND data_chamada = CURDATE()";
             $stmtCheckTurma = $this->conn->prepare($sqlCheckTurma);
             $stmtCheckTurma->bindParam(":id_turma", $idTurma);
             $stmtCheckTurma->execute();
             $existeTurma = $stmtCheckTurma->fetchColumn();
 
-            if($existeTurma !== 0){
+            if($existeTurma != 0){
                 $mensagens[] = "Turma ($nomeTurma) já realizou chamada!";
-            }else{
-                $sqlCheck = "SELECT COUNT(*) FROM chamada WHERE id_turma = :id_turma AND id_aluno = :id_aluno";
+            } else {
+                $sqlCheck = "SELECT COUNT(*) FROM chamada WHERE id_turma = :id_turma AND id_aluno = :id_aluno AND data_chamada = CURDATE()";
                 $stmtCheck = $this->conn->prepare($sqlCheck);
-        
-                $sqlInsert = "INSERT INTO chamada (presenca, id_turma, id_aluno) VALUES (1, :id_turma, :id_aluno)";
+    
+                $sqlInsert = "INSERT INTO chamada (presenca, id_turma, id_aluno, data_chamada) VALUES (1, :id_turma, :id_aluno, CURDATE())";
                 $stmtInsert = $this->conn->prepare($sqlInsert);
-        
-        
+    
                 foreach ($ids as $idAluno) {
                     $stmtCheck->bindParam(":id_turma", $idTurma);
                     $stmtCheck->bindParam(":id_aluno", $idAluno);
                     $stmtCheck->execute();
                     $existe = $stmtCheck->fetchColumn();
-        
+    
                     if ($existe == 0) {
                         $stmtInsert->bindParam(":id_turma", $idTurma);
                         $stmtInsert->bindParam(":id_aluno", $idAluno);
                         $stmtInsert->execute();
                     } else {
-                        $mensagens[] = "Presença já registrada anteriormente para o aluno de ID ($idAluno).";
-                    } 
-            }
+                        $mensagens[] = "Presença já registrada hoje para o aluno de ID ($idAluno).";
+                    }
+                }
             }
     
             return ["sucesso" => true, "mensagens" => $mensagens];

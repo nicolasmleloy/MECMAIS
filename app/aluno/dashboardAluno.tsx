@@ -17,7 +17,6 @@ export default function DashboardAluno() {
       try {
         const response = await fetch(`http://localhost/MECMAIS/router/alunoRouter.php?acao=buscarNomeAluno&id=${id}`);
         const data = await response.json();
-        console.log(data)
         if (data.nome) {
           setNome(data.nome);
         } else {
@@ -38,8 +37,9 @@ export default function DashboardAluno() {
       try {
         const response = await fetch(`http://localhost/MECMAIS/router/alunoRouter.php?acao=buscarChamada&id=${id}`);
         const data = await response.json();
-        if (data.presenca !== undefined) {
-          setChamada(data.presenca === 1 ? "Confirmada" : "Não confirmada");
+        console.log(data);
+        if (data.presenca != undefined) {
+          setChamada(data.presenca == 1 ? "Confirmada" : "Não confirmada");
         } else {
           setChamada("Não confirmada");
         }
@@ -74,7 +74,12 @@ export default function DashboardAluno() {
 
                     <View className="flex-col text-center font-semibold w-[200px]">
                         <Text className="text-[30px]">Chamada:</Text>
-                        <Text className="text-[20px]">{chamada}</Text>
+                        {chamada === "Confirmada" ? (
+                          <Text className="text-[20px] text-green-700 font-semibold">{chamada}</Text>
+                        ) : (
+                          <Text className="text-[20px] text-red-700 font-semibold">{chamada}</Text>
+                        )
+                        }
                         <Text className="text-[20px]">Chamada {formattedDate}</Text>
                     </View>
                 </View>

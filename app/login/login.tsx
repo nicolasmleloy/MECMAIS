@@ -23,10 +23,8 @@ export default function Login() {
       });
 
       const data = await response.json();
-      console.log(data.user)
 
       if (data.success) {
-      
         switch (tp) {
           case "admin":
             router.push("/admin/opcoesAdm");
@@ -46,14 +44,14 @@ export default function Login() {
             params:{id: data.user.id}});
             break;
           default:
-            Alert.alert("Erro", "Tipo de usuário desconhecido.");
+            window.alert("Tipo de usuário desconhecido.");
         }
       } else {
-        Alert.alert("Erro", data.message || "Login inválido.");
+        window.alert(`Erro: ${ data.message || "Login inválido."}`);
       }
     } catch (error) {
-      console.error("Erro no login:", error);
-      Alert.alert("Erro de conexão", "Não foi possível conectar ao servidor.");
+      console.error("Erro no login:", error)
+      window.alert("Erro de conexão: Não foi possível conectar ao servidor.");
     }
   };
 

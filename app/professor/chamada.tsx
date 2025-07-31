@@ -48,6 +48,7 @@ export default function Chamada() {
     });
 
     const dadosResposta = await resposta.json();
+    console.log(dadosResposta)
 
     if (dadosResposta.erro) {
       window.alert(`Erro: ${dadosResposta.erro}`);
