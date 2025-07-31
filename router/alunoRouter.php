@@ -13,6 +13,11 @@ switch ($acao) {
         $id = $_GET['id'] ?? '';
         echo json_encode($chamada->buscarNomeAluno($id));
         break;
+
+    case 'buscarChamada':
+        $id = $_GET['id'] ?? '';
+        echo json_encode($chamada->BuscarChamada($id));
+        break;
     default:
         echo json_encode(["erro" => "Ação inválida"]);
         break;

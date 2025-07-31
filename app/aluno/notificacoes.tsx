@@ -14,7 +14,7 @@ export default function NotificacoesAlunoPais() {
 
             <Notificacao Tipo="Atenção" Mensagem="O cardápio da semana já está disponível para consulta"/>
 
-            <FooterOpcoes perfil="cozinha" pagina='notificacoes'/>
+            <FooterOpcoes perfil="aluno" pagina='notificacoes'/>
         </View>
 
     )

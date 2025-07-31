@@ -7,6 +7,7 @@ import FooterOpcoes from "../components/footerOpcoes";
 export default function DashboardAluno() {
   const { id } = useLocalSearchParams(); 
   const [nome, setNome] = useState("");
+  const [chamada, setChamada] = useState("Não confirmada");
   const [dateTime, setDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -28,6 +29,26 @@ export default function DashboardAluno() {
     }
 
     buscarNome();
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    async function buscarChamada() {
+      try {
+        const response = await fetch(`http://localhost/MECMAIS/router/alunoRouter.php?acao=buscarChamada&id=${id}`);
+        const data = await response.json();
+        if (data.presenca !== undefined) {
+          setChamada(data.presenca === 1 ? "Confirmada" : "Não confirmada");
+        } else {
+          setChamada("Não confirmada");
+        }
+      } catch (error) {
+        setChamada("Erro ao buscar presença");
+      }
+    }
+
+    buscarChamada();
   }, [id]);
 
   useEffect(() => {
@@ -53,7 +74,7 @@ export default function DashboardAluno() {
 
                     <View className="flex-col text-center font-semibold w-[200px]">
                         <Text className="text-[30px]">Chamada:</Text>
-                        <Text className="text-[20px]">Confirmada</Text>
+                        <Text className="text-[20px]">{chamada}</Text>
                         <Text className="text-[20px]">Chamada {formattedDate}</Text>
                     </View>
                 </View>

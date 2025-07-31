@@ -21,6 +21,17 @@ class AlunoController {
             return ["erro" => $th->getMessage()];
         }
     }
-
+    
+    public function BuscarChamada($idAluno) {
+        try {
+            $sql = "SELECT presenca FROM chamada WHERE id_aluno = :id ORDER BY id DESC LIMIT 1";
+            $db = $this->conn->prepare($sql);
+            $db->bindParam(":id", $idAluno);
+            $db->execute();
+            return $db->fetch(PDO::FETCH_ASSOC);
+        } catch (\Throwable $th) {
+            return ["erro" => $th->getMessage()];
+        }
+    }
     
 }
