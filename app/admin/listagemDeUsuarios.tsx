@@ -121,7 +121,7 @@ export default function ListagemDeUsuarios() {
             <View className="flex items-center mt-5">
                 <TouchableOpacity onPress={() => router.push("/admin/cadastroUsuario")} 
                 className="flex-row items-center gap-2 justify-center w-[70%] p-4 rounded-lg bg-green-700 shadow-md font-semibold text-white text-lg">
-                <Text>Novo Cadastro</Text>
+                <Text className="text-white text-lg">Novo Cadastro</Text>
                 <Ionicons name="add-outline" size={30} color="#fff" />
                 </TouchableOpacity>
             </View>

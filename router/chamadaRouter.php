@@ -27,6 +27,11 @@ switch ($acao) {
         $turma = $data['turma'] ?? '';
         echo json_encode($chamada->EnviarPresencas($ids, $turma));
         break;
+    case 'resetarChamada':
+        $json = file_get_contents("php://input");
+        $data = json_decode($json, true);
+        echo json_encode($chamada->ResetarChamada());
+        break;
     default:
         echo json_encode(["erro" => "Ação inválida"]);
         break;

@@ -16,17 +16,25 @@ interface Turma {
   nome_turma: string;
 }
 
+// const agora = new Date();
+// const hora = agora.getHours();
+// const minutos = agora.getMinutes();
+
+// const horaAtual =  `${hora}:${minutos}`;
+// console.log(horaAtual);
+
+// if(horaAtual === "14:34"){
+//   console.log("Em ponto!!!!!");
+// }
+
 export default function Chamada() {
+  const [mostrarPopupConfirmar, setMostrarPopupConfirmar] = useState(false);
   const [mostrarPopup, setMostrarPopup] = useState(false);
   const [turmas, setTurmas] = useState<Turma[]>([]);
   const [turmaSelecionada, setTurmaSelecionada] = useState<string>("");
   const [alunos, setAlunos] = useState<Aluno[]>([]);
   const [totalPresentes, setTotalPresentes] = useState<number>(0);
   const [alunosPresentes, setAlunosPresentes] = useState<Aluno[]>([]);
-  
-  function Confirmateste(){
-    console.log("Confirmado");
-  };
 
   async function EnviarPresencas() {
     const ids = alunosPresentes.map(a => a.id);
@@ -40,7 +48,18 @@ export default function Chamada() {
     });
 
     const dadosResposta = await resposta.json();
-    console.log(dadosResposta);
+
+    if (dadosResposta.erro) {
+      window.alert(`Erro: ${dadosResposta.erro}`);
+      return;
+    }
+    
+    if (dadosResposta.mensagens && Array.isArray(dadosResposta.mensagens)) {
+      window.alert(`${dadosResposta.mensagens.join("\n")}`);
+    }else{
+      setMostrarPopup(true);
+    }
+
   }
 
   useEffect(() => {
@@ -125,14 +144,15 @@ export default function Chamada() {
     <View className="px-4 py-4 mb-5">
       <TouchableOpacity
         className="bg-green-700 py-3 rounded-lg shadow-md mb-3"
-        onPress={() => EnviarPresencas()}
+        onPress={() => setMostrarPopupConfirmar(true)}
       >
         <Text className="text-white text-center font-semibold text-lg">Concluir</Text>
       </TouchableOpacity>
     
     </View>
 
-    <ConfirmacaoPopup function={Confirmateste} Tipo_compon="ConfirmarComImagem" mensagem="Enviado com sucesso!" visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
+    <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem="Enviado com sucesso!" visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
+    <ConfirmacaoPopup function={() => EnviarPresencas()} Tipo_compon="Deletar" mensagem="Finalizar chamada?" visible={mostrarPopupConfirmar} onClose={() => setMostrarPopupConfirmar(false)} />
     <BtnVoltar/>
     </View>
   );

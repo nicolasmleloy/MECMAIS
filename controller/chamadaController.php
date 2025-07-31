@@ -77,19 +77,39 @@ class ChamadaController {
     
             $idTurma = $turma['id'];
     
+            $sqlCheck = "SELECT COUNT(*) FROM chamada WHERE id_turma = :id_turma AND id_aluno = :id_aluno";
+            $stmtCheck = $this->conn->prepare($sqlCheck);
+    
             $sqlInsert = "INSERT INTO chamada (presenca, id_turma, id_aluno) VALUES (1, :id_turma, :id_aluno)";
             $stmtInsert = $this->conn->prepare($sqlInsert);
     
+            $mensagens = [];
+    
             foreach ($ids as $idAluno) {
-                $stmtInsert->bindParam(":id_turma", $idTurma);
-                $stmtInsert->bindParam(":id_aluno", $idAluno);
-                $stmtInsert->execute();
+                $stmtCheck->bindParam(":id_turma", $idTurma);
+                $stmtCheck->bindParam(":id_aluno", $idAluno);
+                $stmtCheck->execute();
+                $existe = $stmtCheck->fetchColumn();
+    
+                if ($existe == 0) {
+                    $stmtInsert->bindParam(":id_turma", $idTurma);
+                    $stmtInsert->bindParam(":id_aluno", $idAluno);
+                    $stmtInsert->execute();
+                    $mensagens[] = "Presença registrada para o aluno de ID $idAluno.";
+                } else {
+                    $mensagens[] = "Presença já registrada anteriormente para o aluno de ID ($idAluno).";
+                }
             }
     
-            return ["sucesso" => true, "mensagem" => "Presenças registradas com sucesso"];
+            return ["sucesso" => true, "mensagens" => $mensagens];
         } catch (\Throwable $th) {
             return ["erro" => $th->getMessage()];
         }
+    }
+    
+
+    public function ResetarChamada(){
+        
     }
     
 }
