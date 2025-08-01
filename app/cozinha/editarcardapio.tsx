@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import Header from "../components/header";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,36 +6,89 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import BtnVoltar from "../components/btnVoltar";
 
 export default function EditarCardapio() {
+  interface Cardapio {
+    id: string;
+    nome: string;
+    tipo_porcao: string;
+    selecionado?: boolean;
+  }
+
+  const [ingredientes, setIngredientes] = useState<Cardapio[]>([]);
   const { dia, prato } = useLocalSearchParams();
   const router = useRouter();
   const [cardapio, setCardapio] = useState(prato || "");
   const [inputPesquisa, setInputPesquisa] = useState("");
 
-  const [ingredientes, setIngredientes] = useState([
-    { id: "1", nome: "Arroz", tipo: "kg", selecionado: true },
-    { id: "2", nome: "Macarrão", tipo: "kg", selecionado: false },
-    { id: "3", nome: "Carne", tipo: "kg", selecionado: false },
-    { id: "4", nome: "Frango", tipo: "kg", selecionado: false },
-    { id: "5", nome: "Peixe", tipo: "kg", selecionado: false },
-    { id: "6", nome: "Óleo", tipo: "L", selecionado: false },
-    { id: "7", nome: "Farinha", tipo: "kg", selecionado: false },
-    { id: "8", nome: "Batata", tipo: "kg", selecionado: false },
-    { id: "9", nome: "Cebola", tipo: "kg", selecionado: false },
-    { id: "10", nome: "Tomate", tipo: "kg", selecionado: false },
-    { id: "11", nome: "Cenoura", tipo: "kg", selecionado: false },
-  ]);
-
-  const alternarSelecionado = (id) => {
-    setIngredientes((prev) =>
-      prev.map((item) =>
+  const alternarSelecionado = (id: string) => {
+    setIngredientes((prevIngredientes) =>
+      prevIngredientes.map((item) =>
         item.id === id ? { ...item, selecionado: !item.selecionado } : item
       )
     );
   };
 
   const ingredientesFiltrados = ingredientes.filter((item) =>
-    item.nome.toLowerCase().includes(inputPesquisa.toLowerCase())
+    item.nome.toLowerCase().includes(inputPesquisa.toLowerCase()) ||
+    item.tipo_porcao?.toLowerCase().includes(inputPesquisa.toLowerCase())
   );
+
+  useEffect(() => {
+    async function carregarIngredientes() {
+      try {
+        const resIngredientes = await fetch("http://localhost/MECMAIS/router/cardapioRouter.php?acao=buscarIngredientes");
+        const resCardapioDia = await fetch("http://localhost/MECMAIS/router/cardapioRouter.php?acao=buscarCardapioSemana");
+
+        const dadosIngredientes = await resIngredientes.json();
+        const dadosCardapio = await resCardapioDia.json();
+
+        const ingredientesSelecionados = dadosCardapio[dia]?.ingredientes || [];
+
+        const listaIngredientes = Array.isArray(dadosIngredientes[0]) ? dadosIngredientes[0] : dadosIngredientes;
+
+        const ingredientesComStatus = listaIngredientes.map((item: Cardapio) => ({
+          ...item,
+          selecionado: ingredientesSelecionados.includes(item.nome),
+        }));
+
+        setIngredientes(ingredientesComStatus);
+      } catch (error) {
+        console.error("Erro ao buscar ingredientes:", error);
+      }
+    }
+
+    carregarIngredientes();
+  }, []);
+
+  async function salvarCardapio() {
+    const ingredientesSelecionados = ingredientes
+      .filter((item) => item.selecionado)
+      .map((item) => item.id);
+
+    try {
+      const resposta = await fetch("http://localhost/MECMAIS/router/cardapioRouter.php?acao=salvarCardapio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dia,
+          prato: cardapio,
+          ingredientes: ingredientesSelecionados,
+        }),
+      });
+
+      const resultado = await resposta.json();
+
+      if (resultado.status === "sucesso") {
+        alert("Cardápio salvo com sucesso!");
+        router.push("../cozinha/cardapio");
+      } else {
+        alert("Erro ao salvar cardápio.");
+      }
+    } catch (error) {
+      console.error("Erro ao salvar:", error);
+    }
+  }
 
   return (
     <View className="flex-1 bg-white">
@@ -77,7 +130,7 @@ export default function EditarCardapio() {
               className="flex-row items-center justify-between px-2 py-2 border-b border-gray-300"
             >
               <Text className="w-1/2 text-gray-700">{item.nome}</Text>
-              <Text className="w-1/4 text-gray-700 text-center">{item.tipo}</Text>
+              <Text className="w-1/4 text-gray-700 text-center">{item.tipo_porcao}</Text>
               <TouchableOpacity
                 className="w-1/4 items-center"
                 onPress={() => alternarSelecionado(item.id)}
@@ -95,12 +148,12 @@ export default function EditarCardapio() {
 
       <TouchableOpacity
         className="bg-green-600 m-4 py-3 rounded-lg items-center"
-        onPress={() => router.push("../cozinha/cardapio")}
+        onPress={salvarCardapio}
       >
         <Text className="text-white text-lg font-bold">Concluir</Text>
       </TouchableOpacity>
+
       <BtnVoltar />
     </View>
-
   );
 }
