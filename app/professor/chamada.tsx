@@ -16,17 +16,6 @@ interface Turma {
   nome_turma: string;
 }
 
-// const agora = new Date();
-// const hora = agora.getHours();
-// const minutos = agora.getMinutes();
-
-// const horaAtual =  `${hora}:${minutos}`;
-// console.log(horaAtual);
-
-// if(horaAtual === "14:34"){
-//   console.log("Em ponto!!!!!");
-// }
-
 export default function Chamada() {
   const [mostrarPopupConfirmar, setMostrarPopupConfirmar] = useState(false);
   const [mostrarPopup, setMostrarPopup] = useState(false);
@@ -50,16 +39,25 @@ export default function Chamada() {
     const dadosResposta = await resposta.json();
     console.log(dadosResposta)
 
-    if (dadosResposta.erro) {
-      window.alert(`Erro: ${dadosResposta.erro}`);
-      return;
-    }
-    
-    if (dadosResposta.mensagens && Array.isArray(dadosResposta.mensagens)) {
-      window.alert(`${dadosResposta.mensagens.join("\n")}`);
+    if(dadosResposta.sucesso){
+      if(dadosResposta.mensagens[0] === "Presenças registradas com sucesso."){
+        setMostrarPopup(true);
+      }else{
+        window.alert(dadosResposta.mensagens[0]);
+      }
     }else{
-      setMostrarPopup(true);
+      console.log("Erro: ", dadosResposta.mensagens[0])
     }
+
+    // if (dadosResposta.erro) {
+    //   window.alert(`Erro: ${dadosResposta.erro}`);
+    //   return;
+    // }
+    
+    // if (dadosResposta.mensagens && Array.isArray(dadosResposta.mensagens)) {
+    //   window.alert(`${dadosResposta.mensagens.join("\n")}`);
+    // }else{
+    // }
 
   }
 

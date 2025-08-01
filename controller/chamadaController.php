@@ -103,21 +103,33 @@ class ChamadaController {
                         $stmtInsert->bindParam(":id_turma", $idTurma);
                         $stmtInsert->bindParam(":id_aluno", $idAluno);
                         $stmtInsert->execute();
-                    } else {
-                        $mensagens[] = "Presença já registrada hoje para o aluno de ID ($idAluno).";
                     }
                 }
             }
+
+            if (empty($mensagens)) {
+                return ["sucesso" => true, "mensagens" => ["Presenças registradas com sucesso."]];
+            } else {
+                return ["sucesso" => true, "mensagens" => $mensagens];
+            }
     
-            return ["sucesso" => true, "mensagens" => $mensagens];
         } catch (\Throwable $th) {
             return ["erro" => $th->getMessage()];
         }
     }
     
 
-    public function ResetarChamada(){
-        
+    public function QtdAlunosPresentes(){
+        try {
+            $sqlChamada = "SELECT COUNT(id) AS alunosPresentes FROM chamada WHERE data_chamada = CURDATE()";
+            $stmtChamada = $this->conn->prepare($sqlChamada);
+            $stmtChamada->execute();
+            $chamada = $stmtChamada->fetch(PDO::FETCH_ASSOC);
+            
+            return $chamada;
+        } catch (\Throwable $th) {
+            return ["erro" => $th->getMessage()];
+        }
     }
     
 }

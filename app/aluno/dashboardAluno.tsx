@@ -37,7 +37,6 @@ export default function DashboardAluno() {
       try {
         const response = await fetch(`http://localhost/MECMAIS/router/alunoRouter.php?acao=buscarChamada&id=${id}`);
         const data = await response.json();
-        console.log(data);
         if (data.presenca != undefined) {
           setChamada(data.presenca == 1 ? "Confirmada" : "Não confirmada");
         } else {

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from "react-native";
 import Header from "../components/header";
 import FooterOpcoes from '../components/footerOpcoes';
@@ -17,6 +17,36 @@ export default function DashboardCozinha() {
     quantidade: string;
   };
 
+  const [qtdAlunosPresentes, setQtdAlunosPresentes] = useState(0);
+  const [qtdAlunosEstimados, setQtdAlunosEstimados] = useState(0);
+
+  async function QtdAlunosPresentes() {
+    try {
+      const resposta = await fetch("http://localhost/MECMAIS/router/chamadaRouter.php?acao=QtdAlunosPresentes", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+      })
+
+      const dadosResposta = await resposta.json()
+      setQtdAlunosPresentes(Number(dadosResposta[0].alunosPresentes));
+    } catch (error) {
+      console.log("Erro", error);
+    }
+  }
+
+  useEffect(() => {
+    QtdAlunosPresentes();
+  }, [])
+
+  useEffect(() => {
+    if (!isNaN(qtdAlunosPresentes)) {
+      const estimativa = Math.round(qtdAlunosPresentes + (qtdAlunosPresentes * 0.05));
+      setQtdAlunosEstimados(estimativa);
+    }
+  }, [qtdAlunosPresentes]);
+
   const dadosAlimentos = [
     { "nome": "Arroz", "porcao_por_aluno_g": 120 },
     { "nome": "Feijão", "porcao_por_aluno_g": 90 },
@@ -31,13 +61,18 @@ export default function DashboardCozinha() {
   function calcularIngredientes(dadosAlimentos: Alimento[], quantidadeAlunosEstimados: number): IngredienteCalculado[] {
     return dadosAlimentos.map(item => {
       if (item.porcao_por_aluno_g) {
-        const totalKg = (item.porcao_por_aluno_g * quantidadeAlunosEstimados) / 1000;
-        return { nome: item.nome, quantidade: `${Math.round(totalKg)} kg` };
+        const totalGramas = item.porcao_por_aluno_g * quantidadeAlunosEstimados;
+        if (totalGramas < 1000) {
+          return { nome: item.nome, quantidade: `${Math.round(totalGramas)} g` };
+        } else {
+          const totalKg = totalGramas / 1000;
+          return { nome: item.nome, quantidade: `${totalKg.toFixed(1)} kg` };
+        }
       }
       if (item.porcao_por_aluno_ml) {
         const totalLitros = (item.porcao_por_aluno_ml * quantidadeAlunosEstimados) / 1000;
         return { nome: item.nome, quantidade: `${Math.round(totalLitros)}l` };
-      }
+      }  
       if (item.porcao_por_aluno_unidade) {
         return { nome: item.nome, quantidade: `${Math.round(item.porcao_por_aluno_unidade * quantidadeAlunosEstimados)} uni` };
       }
@@ -45,9 +80,8 @@ export default function DashboardCozinha() {
     });
   }
 
-  const quantidadeAlunos = 128;
-  const quantidadeAlunosEstimados = Math.round(quantidadeAlunos + (quantidadeAlunos * 0.05));
-  const ingredientesCalculados = calcularIngredientes(dadosAlimentos, quantidadeAlunosEstimados);
+  const ingredientesCalculados = calcularIngredientes(dadosAlimentos, qtdAlunosEstimados);
+
 
   return (
     <View className="flex">
@@ -59,11 +93,11 @@ export default function DashboardCozinha() {
       <View className="flex-row ml-10 mr-10 mt-5 justify-between p-10 rounded-[20px] bg-[#E4ECFD] shadow">
         <View className="flex bg-gray-300 items-center justify-center gap-2 shadow p-2 rounded-[10px]">
           <Text className="text-xl">Chamada</Text>
-          <Text className="text-3xl font-semibold">{quantidadeAlunos}</Text>
+          <Text className="text-3xl font-semibold">{qtdAlunosPresentes}</Text>
         </View>
         <View className="flex bg-gray-300 items-center justify-center gap-2 shadow p-2 rounded-[10px]">
           <Text className="text-xl">Estimativa</Text>
-          <Text className="text-3xl font-semibold text-green-800">{quantidadeAlunosEstimados}</Text>
+          <Text className="text-3xl font-semibold text-green-800">{qtdAlunosEstimados}</Text>
         </View>
       </View>
 
