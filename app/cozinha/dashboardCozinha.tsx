@@ -19,6 +19,33 @@ export default function DashboardCozinha() {
 
   const [qtdAlunosPresentes, setQtdAlunosPresentes] = useState(0);
   const [qtdAlunosEstimados, setQtdAlunosEstimados] = useState(0);
+  const [ingredientesDoDia, setingredientesDoDia] = useState([]);
+  
+  function capturarDiaDaSemana(){
+    const diasDaSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+    const dataAtual = new Date();
+    const numeroDia = dataAtual.getDay();
+    const diaSemana = diasDaSemana[numeroDia];
+
+    return diaSemana;
+  }
+
+  async function PegarIngredientesDoDia() {
+    try {
+      const resposta = await fetch("http://localhost/MECMAIS/router/cardapioRouter.php?acao=capturarIngredientes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({diaDaSemana: capturarDiaDaSemana()})
+      })
+
+      const dadosResposta = await resposta.json()
+      setingredientesDoDia(dadosResposta)
+    } catch (error) {
+      console.log("Erro", error);
+    }
+  }
 
   async function QtdAlunosPresentes() {
     try {
@@ -38,6 +65,7 @@ export default function DashboardCozinha() {
 
   useEffect(() => {
     QtdAlunosPresentes();
+    PegarIngredientesDoDia();
   }, [])
 
   useEffect(() => {
@@ -48,40 +76,49 @@ export default function DashboardCozinha() {
   }, [qtdAlunosPresentes]);
 
   const dadosAlimentos = [
-    { "nome": "Arroz", "porcao_por_aluno_g": 120 },
-    { "nome": "Feijão", "porcao_por_aluno_g": 90 },
-    { "nome": "Carne Moída", "porcao_por_aluno_g": 100 },
-    { "nome": "Macarrão", "porcao_por_aluno_g": 100 },
-    { "nome": "Alface", "porcao_por_aluno_g": 30 },
-    { "nome": "Tomate", "porcao_por_aluno_g": 20 },
-    { "nome": "Maçã", "porcao_por_aluno_unidade": 1},
-    { "nome": "Suco", "porcao_por_aluno_ml": 200 }
-  ]
+    { nome: "Arroz", porcao_por_aluno_g: 100 },
+    { nome: "Feijão", porcao_por_aluno_g: 120 },
+    { nome: "Frango", porcao_por_aluno_g: 150 },
+    { nome: "Salada de alface", porcao_por_aluno_g: 50 },
+    { nome: "Macarrão", porcao_por_aluno_g: 130 },
+    { nome: "Ovo cozido", porcao_por_aluno_unidade: 1 },
+    { nome: "Banana", porcao_por_aluno_unidade: 1 },
+    { nome: "Leite", porcao_por_aluno_ml: 200 },
+    { nome: "Pão francês", porcao_por_aluno_unidade: 1 },
+    { nome: "Carne moída", porcao_por_aluno_g: 140 }
+  ];
 
-  function calcularIngredientes(dadosAlimentos: Alimento[], quantidadeAlunosEstimados: number): IngredienteCalculado[] {
-    return dadosAlimentos.map(item => {
-      if (item.porcao_por_aluno_g) {
-        const totalGramas = item.porcao_por_aluno_g * quantidadeAlunosEstimados;
+  const ingredientesFiltradosCalculados: IngredienteCalculado[] = ingredientesDoDia.map((ingrediente: any) => {
+    const alimento = dadosAlimentos.find(item => item.nome.toLowerCase() === ingrediente.nome.toLowerCase());
+  
+    if (alimento) {
+      if (alimento.porcao_por_aluno_g) {
+        const totalGramas = alimento.porcao_por_aluno_g * qtdAlunosEstimados;
         if (totalGramas < 1000) {
-          return { nome: item.nome, quantidade: `${Math.round(totalGramas)} g` };
+          return { nome: alimento.nome, quantidade: `${Math.round(totalGramas)} g` };
         } else {
           const totalKg = totalGramas / 1000;
-          return { nome: item.nome, quantidade: `${totalKg.toFixed(1)} kg` };
+          return { nome: alimento.nome, quantidade: `${totalKg.toFixed(1)} kg` };
         }
       }
-      if (item.porcao_por_aluno_ml) {
-        const totalLitros = (item.porcao_por_aluno_ml * quantidadeAlunosEstimados) / 1000;
-        return { nome: item.nome, quantidade: `${Math.round(totalLitros)}l` };
-      }  
-      if (item.porcao_por_aluno_unidade) {
-        return { nome: item.nome, quantidade: `${Math.round(item.porcao_por_aluno_unidade * quantidadeAlunosEstimados)} uni` };
+  
+      if (alimento.porcao_por_aluno_ml) {
+        const totalLitros = (alimento.porcao_por_aluno_ml * qtdAlunosEstimados) / 1000;
+        return { nome: alimento.nome, quantidade: `${Math.round(totalLitros)} l` };
       }
-      return { nome: item.nome, quantidade: "N/A" };
-    });
-  }
+  
+      if (alimento.porcao_por_aluno_unidade) {
+        return {
+          nome: alimento.nome,
+          quantidade: `${Math.round(alimento.porcao_por_aluno_unidade * qtdAlunosEstimados)} un`
+        };
+      }
+    }
+  
+    return null;
+  }).filter(Boolean) as IngredienteCalculado[];
 
-  const ingredientesCalculados = calcularIngredientes(dadosAlimentos, qtdAlunosEstimados);
-
+  const ingredientesCalculados = ingredientesFiltradosCalculados;
 
   return (
     <View className="flex">
@@ -101,8 +138,9 @@ export default function DashboardCozinha() {
         </View>
       </View>
 
-      <Text className="flex justify-center mt-5 mb-5 text-xl">Ingredientes Estimados</Text>
-      <ScrollView className="flex max-h-[200px] ml-5 mr-5 gap-2">
+      <Text className="flex justify-center mt-5 text-2xl">Ingredientes Estimados</Text>
+      <Text className="flex justify-center mb-5 text-xl text-gray-600 mt-2">{capturarDiaDaSemana()}</Text>
+      <ScrollView className="flex max-h-[200px] ml-5 mr-5 gap-2 shadow-gray shadow rounded-lg p-3">
         {ingredientesCalculados.map((item, index) => (
         <View key={index} className="w-full flex-row justify-between px-4">
           <Text className="text-base font-semibold">{item.nome}:</Text>

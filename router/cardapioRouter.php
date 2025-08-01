@@ -15,16 +15,28 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         case 'buscarCardapioSemana':
             echo json_encode($cardapioController->buscarCardapioSemana());
             break;
-            
+
+        default:
+            echo json_encode(["erro" => "Ação não encontrada"]);
+            break;
+    }
+} else if($_SERVER["REQUEST_METHOD"] === "POST"){
+    switch ($_GET["acao"]) {
         case 'salvarCardapio':
             $input = json_decode(file_get_contents("php://input"), true);
             echo json_encode($cardapioController->salvarCardapio($input));
+            break;
+
+        case 'capturarIngredientes':
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+            echo json_encode($cardapioController->buscarIngredientesDia($data['diaDaSemana']));
             break;
 
         default:
             echo json_encode(["erro" => "Ação não encontrada"]);
             break;
     }
-} else {
+}else{
     echo json_encode(["erro" => "Método inválido"]);
 }

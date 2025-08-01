@@ -82,5 +82,20 @@ class CardapioController {
         }
     }
     
-    
+    public function buscarIngredientesDia($diaSemana){
+        try {
+            $sql = $this->conn->prepare("
+            SELECT i.nome 
+            FROM cardapio c
+            JOIN ingredientes i ON i.id = c.id_ingrediente
+            WHERE c.dia_da_semana = :diaDaSemana
+        ");
+        
+        $sql->bindParam(":diaDaSemana", $diaSemana);
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\Throwable $th) {
+            return ["erro" => $th->getMessage()];
+        }
+    }
 }

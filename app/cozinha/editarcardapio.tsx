@@ -20,11 +20,16 @@ export default function EditarCardapio() {
   const [inputPesquisa, setInputPesquisa] = useState("");
 
   const alternarSelecionado = (id: string) => {
-    setIngredientes((prevIngredientes) =>
-      prevIngredientes.map((item) =>
+    setIngredientes((prevIngredientes) => {
+      const novosIngredientes = prevIngredientes.map((item) =>
         item.id === id ? { ...item, selecionado: !item.selecionado } : item
-      )
-    );
+      );
+  
+      const selecionados = novosIngredientes.filter((item) => item.selecionado);
+      console.log("Selecionados:", selecionados.map((i) => i.nome));
+  
+      return novosIngredientes;
+    });
   };
 
   const ingredientesFiltrados = ingredientes.filter((item) =>
@@ -78,6 +83,7 @@ export default function EditarCardapio() {
       });
 
       const resultado = await resposta.json();
+      console.log(resultado);
 
       if (resultado.status === "sucesso") {
         alert("Cardápio salvo com sucesso!");
