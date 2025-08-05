@@ -86,9 +86,14 @@ class TurmaController{
             $stmtTurma->bindParam(":id_turma", $idTurma);
             $stmtTurma->execute();
 
+            $sqlDeleteChamada = "DELETE FROM chamada WHERE id = :id_turma";
+            $stmtChamada = $this->conn->prepare($sqlDeleteChamada);
+            $stmtChamada->bindParam(":id_turma", $idTurma);
+            $stmtChamada->execute();
+
             $this->conn->commit();
 
-            if ($stmtAlunos->execute() && $stmtTurma->execute()) {
+            if ($stmtAlunos->execute() && $stmtTurma->execute() && $stmtChamada->execute()) {
                 return true;
             } else {
                 return false;

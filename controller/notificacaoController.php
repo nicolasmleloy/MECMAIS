@@ -26,7 +26,7 @@ class NotificacaoController{
 
     public function ObterNotificacoesAluno(){
         try {
-            $sql = "SELECT * FROM notificacao WHERE data_notificacao = CURDATE() AND titulo = 'Alerta'";
+            $sql = "SELECT * FROM notificacao WHERE data_notificacao = CURDATE() AND titulo = 'Alerta!'";
             $sqlPrepare = $this->conn->prepare($sql);
             $sqlPrepare->execute();
             $res = $sqlPrepare->fetchAll(PDO::FETCH_ASSOC);

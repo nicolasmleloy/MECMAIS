@@ -17,10 +17,12 @@ interface Turma {
 }
 
 export default function Chamada() {
+  const [mostrarPopupMensagem, setMostrarPopupMensagem] = useState(false);
   const [mostrarPopupConfirmar, setMostrarPopupConfirmar] = useState(false);
   const [mostrarPopup, setMostrarPopup] = useState(false);
   const [turmas, setTurmas] = useState<Turma[]>([]);
   const [turmaSelecionada, setTurmaSelecionada] = useState<string>("");
+  const [mensagem, setMensagem] = useState<string>("");
   const [alunos, setAlunos] = useState<Aluno[]>([]);
   const [totalPresentes, setTotalPresentes] = useState<number>(0);
   const [alunosPresentes, setAlunosPresentes] = useState<Aluno[]>([]);
@@ -43,22 +45,12 @@ export default function Chamada() {
       if(dadosResposta.mensagens[0] === "Presenças registradas com sucesso."){
         setMostrarPopup(true);
       }else{
-        window.alert(dadosResposta.mensagens[0]);
+        setMensagem(dadosResposta.mensagens[0]);
+        setMostrarPopupMensagem(true);
       }
     }else{
-      console.log("Erro: ", dadosResposta.mensagens[0])
+      setMostrarPopupMensagem(true);
     }
-
-    // if (dadosResposta.erro) {
-    //   window.alert(`Erro: ${dadosResposta.erro}`);
-    //   return;
-    // }
-    
-    // if (dadosResposta.mensagens && Array.isArray(dadosResposta.mensagens)) {
-    //   window.alert(`${dadosResposta.mensagens.join("\n")}`);
-    // }else{
-    // }
-
   }
 
   useEffect(() => {
@@ -152,6 +144,7 @@ export default function Chamada() {
 
     <ConfirmacaoPopup function={() => null} Tipo_compon="ConfirmarComImagem" mensagem="Enviado com sucesso!" visible={mostrarPopup} onClose={() => setMostrarPopup(false)} />
     <ConfirmacaoPopup function={() => EnviarPresencas()} Tipo_compon="Deletar" mensagem="Finalizar chamada?" visible={mostrarPopupConfirmar} onClose={() => setMostrarPopupConfirmar(false)} />
+    <ConfirmacaoPopup function={() => null} Tipo_compon="Confirmar" mensagem={mensagem} visible={mostrarPopupMensagem} onClose={() => setMostrarPopupMensagem(false)} />
     <BtnVoltar/>
     </View>
   );

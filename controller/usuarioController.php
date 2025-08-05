@@ -154,8 +154,17 @@ class UsuarioController{
     public function DeleteUsuario($idUsuario, $tipo_perfil){
         try{
             if($tipo_perfil === "Aluno(a)"){
-                $this->conn->beginTransaction();
-                $sql = "DELETE FROM aluno WHERE id = :idUsuario";
+                $sqlChamada = "DELETE FROM chamada WHERE id_aluno = :idUsuario";
+                $stmtChamada = $this->conn->prepare($sqlChamada);
+                $stmtChamada->bindParam(":idUsuario", $idUsuario);
+                $stmtChamada->execute();
+
+                $sqlAluno = "DELETE FROM aluno WHERE id = :idUsuario";
+                $stmtAluno = $this->conn->prepare($sqlAluno);
+                $stmtAluno->bindParam(":idUsuario", $idUsuario);
+                $stmtAluno->execute();
+
+                return true;
             }else if($tipo_perfil === "Professor(a)"){
                 $this->conn->beginTransaction();
                 $sql = "DELETE FROM professor WHERE id = :idUsuario";

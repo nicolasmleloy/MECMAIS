@@ -38,6 +38,7 @@ export default function ListagemDeUsuarios() {
         })
 
         const dadosResposta = await respostaUsuario.json()
+        console.log(dadosResposta);
         setUsuarioRemovido(nomeUsuario);
         setPopUpRemovido(true);
         setDadosResposta(dadosResposta)
@@ -131,6 +132,7 @@ export default function ListagemDeUsuarios() {
                 <ConfirmacaoPopup
                     function={() => {
                         RemoverUsuario(usuarioSelecionado.id, usuarioSelecionado.nome, usuarioSelecionado.tipo);
+                        console.log(usuarioSelecionado.id, usuarioSelecionado.nome, usuarioSelecionado.tipo)
                         setUsuarioSelecionado(null);
                     }}
                     Tipo_compon="Deletar"
