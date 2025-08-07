@@ -15,14 +15,14 @@ export default function Index() {
             onPress={() => router.push("/login/login?tp=professor")}
             className="flex justify-center items-center border w-full p-10 rounded-lg"
           >
-            <Text className="text-xl font-semibold">Sou professor(a)</Text>
+            <Text className="text-xl font-semibold">Professor(a)</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => router.push("/login/login?tp=cozinha")}
             className="flex justify-center items-center border w-full p-10 rounded-lg"
           >
-            <Text className="text-xl font-semibold">Sou cozinheiro(a)</Text>
+            <Text className="text-xl font-semibold">Cozinha</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -30,7 +30,7 @@ export default function Index() {
             className="flex justify-center items-center border w-full p-10 rounded-lg"
           >
             <Text className="text-xl font-semibold">
-              Sou aluno(a)
+              Aluno(a)
             </Text>
           </TouchableOpacity>
         </View>

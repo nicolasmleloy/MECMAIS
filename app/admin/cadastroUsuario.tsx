@@ -160,7 +160,7 @@ export default function CadastroUsuario() {
                 <TextInput
                     value={formSenha}
                     onChangeText={setSenha}
-                    placeholder="Confirmar Senha"
+                    placeholder="Senha"
                     secureTextEntry
                     className="w-[75%] bg-white border border-gray-300 rounded-lg px-3 py-3.5 text-[15px] mb-5 shadow-sm"
                 />

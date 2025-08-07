@@ -119,3 +119,9 @@ INSERT INTO INGREDIENTES (nome, porcao, tipo_porcao) VALUES
 ('Leite', 200, 'ml'),
 ('Pão francês', 1, 'un'),
 ('Carne moída', 140, 'g');
+
+INSERT INTO professor(nome, email, senha)VALUES('Kerolin', 'kerolin@gmail.com', '12345');
+
+INSERT INTO cozinha(nome, email, senha) VALUES('Cozinha', 'cozinha@gmail.com', '12345');
+
+INSERT INTO aluno(nome, email, senha, id_turma)VALUES('Marcos', 'marcos@gmail.com', '12345', 20);

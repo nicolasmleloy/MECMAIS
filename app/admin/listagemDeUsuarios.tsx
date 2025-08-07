@@ -116,7 +116,7 @@ export default function ListagemDeUsuarios() {
                         </View>
                     ))}
                 </ScrollView>
-                <Text className="flex justify-end mt-2 text-gray-700">Total de alunos: {dadosFiltrados.length}</Text>
+                <Text className="flex justify-end mt-2 text-gray-700">Total de usuários: {dadosFiltrados.length}</Text>
             </View>
 
             <View className="flex items-center mt-5">
